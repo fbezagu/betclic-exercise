@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class PlayerView(
     val nickname: String,
     val id: String = "",
-    val score: Int = 0
+    val score: Int = 0,
+    val rank: Int = 0
 ) {
 }

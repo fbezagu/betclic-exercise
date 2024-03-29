@@ -24,7 +24,7 @@ fun Route.playersRouting() {
             try {
                 val player = currentTournament.addPlayer(requestPlayer.nickname)
                 call.respond(HttpStatusCode.Created, PlayerView(player.nickname, player.id, 0))
-            } catch (e:PlayerAlreadyExistsException){
+            } catch (e: PlayerAlreadyExistsException) {
                 call.respond(HttpStatusCode.BadRequest, "Duplicate player nickname")
             }
         }
