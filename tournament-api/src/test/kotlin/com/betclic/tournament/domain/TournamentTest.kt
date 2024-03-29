@@ -33,4 +33,21 @@ class TournamentTest {
         assertEquals(paul, players[0])
         assertEquals(pierre, players[1])
     }
+
+    @Test
+    fun canAddNewPlayer() {
+        val player = Tournament().addPlayer("Michel")
+
+        assertEquals("Michel", player.nickname)
+        assertEquals(1, repositories.players().count)
+    }
+
+    @Test(expected = PlayerAlreadyExistsException::class)
+    fun cantAddPlayerWithSameNickname() {
+        repositories.players().add(Player("Paul"))
+
+        Tournament().addPlayer("Paul")
+
+        assertEquals(1, repositories.players().count)
+    }
 }

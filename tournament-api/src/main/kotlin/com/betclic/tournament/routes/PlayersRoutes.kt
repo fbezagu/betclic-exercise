@@ -21,6 +21,5 @@ fun Route.playersRouting() {
             call.respond(HttpStatusCode.OK)
             currentTournament.end()
         }
-
     }
 }

@@ -27,6 +27,8 @@ class MemoryPlayerRepository : PlayerRepository() {
         items.clear()
     }
 
+    override fun getByNickname(nickname: String): Player? = items.find { it.nickname == nickname }
+
     override val count: Int
         get() = items.size
 
