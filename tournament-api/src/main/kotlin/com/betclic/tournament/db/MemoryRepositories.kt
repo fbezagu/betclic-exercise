@@ -11,11 +11,11 @@ class MemoryRepositories : Repositories() {
     override fun players(): PlayerRepository {
         return playerRepository
     }
-
 }
 
 class MemoryPlayerRepository : PlayerRepository() {
     private val items = mutableListOf<Player>()
+    val updatedItems: MutableList<Player> = mutableListOf()
 
     override fun add(player: Player) {
         player.id = UUID.randomUUID().toString()
@@ -28,6 +28,9 @@ class MemoryPlayerRepository : PlayerRepository() {
     }
 
     override fun getByNickname(nickname: String): Player? = items.find { it.nickname == nickname }
+    override fun update(player: Player) {
+        updatedItems.add(player)
+    }
 
     override val count: Int
         get() = items.size

@@ -13,6 +13,11 @@ class Tournament {
         repositories.players().add(player)
         return player
     }
+
+    fun updatePlayerScore(player: Player, newScore: Int) {
+        player.score = newScore
+        repositories.players().update(player)
+    }
 }
 
 var currentTournament = Tournament()

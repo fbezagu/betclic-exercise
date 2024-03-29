@@ -9,6 +9,7 @@ abstract class PlayerRepository {
     abstract fun all(): List<Player>
     abstract fun clear()
     abstract fun getByNickname(nickname: String): Player?
+    abstract fun update(player: Player)
 
     abstract val count: Int
 }
