@@ -14,7 +14,7 @@ class MemoryRepositories : Repositories() {
 
 }
 
-class MemoryPlayerRepository :PlayerRepository(){
+class MemoryPlayerRepository : PlayerRepository() {
     private val items = mutableListOf<Player>()
 
     override fun add(player: Player) {
@@ -23,5 +23,11 @@ class MemoryPlayerRepository :PlayerRepository(){
     }
 
     override fun all(): List<Player> = items
+    override fun clear() {
+        items.clear()
+    }
+
+    override val count: Int
+        get() = items.size
 
 }

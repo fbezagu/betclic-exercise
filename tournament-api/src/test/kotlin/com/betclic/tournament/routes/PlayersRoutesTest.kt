@@ -43,6 +43,19 @@ class PlayersRoutesTest {
         assertEquals("Paul", players.get(1).nickname)
     }
 
+    @Test
+    fun canRemoveAllPlayers() = testApplication {
+        application {
+            repositories = MemoryRepositories()
+            repositories.players().add(Player(""))
+        }
+
+        val response = client.delete("/players")
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(0, repositories.players().count)
+    }
+
     private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
 
 }

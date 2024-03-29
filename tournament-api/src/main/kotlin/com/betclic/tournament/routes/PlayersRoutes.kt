@@ -1,6 +1,7 @@
 package com.betclic.tournament.routes
 
 import com.betclic.tournament.domain.repositories
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -16,5 +17,10 @@ fun Route.playersRouting() {
 
             call.respond(players.map { PlayerView(it.id, it.nickname) })
         }
+        delete {
+            call.respond(HttpStatusCode.OK)
+            repositories.players().clear()
+        }
+
     }
 }

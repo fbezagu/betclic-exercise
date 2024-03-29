@@ -7,6 +7,8 @@ abstract class Repositories {
 abstract class PlayerRepository {
     abstract fun add(player: Player)
     abstract fun all(): List<Player>
+    abstract fun clear()
+    abstract val count: Int
 }
 
 class NoRepositories : Repositories() {
