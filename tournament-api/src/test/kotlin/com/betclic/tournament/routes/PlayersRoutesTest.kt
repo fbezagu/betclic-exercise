@@ -12,6 +12,7 @@ import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class PlayersRoutesTest {
     @Test
@@ -56,6 +57,46 @@ class PlayersRoutesTest {
         assertEquals(0, repositories.players().count)
     }
 
-    private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
+    @Test
+    fun canAddPlayer() = testApplication {
+        application {
+            repositories = MemoryRepositories()
+            repositories.players().clear()
+        }
+        val client = createClient()
 
+        val response = client.post("/players") {
+            contentType(ContentType.Application.Json)
+            setBody(PlayerView("Michel"))
+        }
+
+        assertEquals(HttpStatusCode.Created, response.status)
+        val players = repositories.players()
+        assertEquals(1, players.count)
+        val playerInRepository = players.all().get(0)
+        assertEquals("Michel", playerInRepository.nickname)
+        val playerReturned = response.body<PlayerView>()
+        assertNotNull(playerReturned)
+        assertEquals(0, playerReturned.score)
+        assertEquals(playerInRepository.id, playerReturned.id)
+    }
+
+
+    @Test
+    fun canAddPlayerWithOnlyNickname() = testApplication {
+        application {
+            repositories = MemoryRepositories()
+            repositories.players().clear()
+        }
+        val client = createClient()
+
+        val response = client.post("/players") {
+            contentType(ContentType.Application.Json)
+            setBody("{\"nickname\":\"michel\"}")
+        }
+
+        assertEquals(HttpStatusCode.Created, response.status)
+    }
+
+    private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
 }
