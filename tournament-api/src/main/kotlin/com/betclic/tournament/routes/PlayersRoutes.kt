@@ -1,5 +1,6 @@
 package com.betclic.tournament.routes
 
+import com.betclic.tournament.domain.PlayerAlreadyExistsException
 import com.betclic.tournament.domain.currentTournament
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -29,8 +30,12 @@ fun Route.playersRouting() {
         }
         post {
             val requestPlayer = call.receive<PlayerView>()
-            val player = currentTournament.addPlayer(requestPlayer.nickname)
-            call.respond(HttpStatusCode.Created, PlayerView(player.nickname, player.id, 0))
+            try {
+                val player = currentTournament.addPlayer(requestPlayer.nickname)
+                call.respond(HttpStatusCode.Created, PlayerView(player.nickname, player.id, 0))
+            } catch (e:PlayerAlreadyExistsException){
+                call.respond(HttpStatusCode.BadRequest, "Duplicate player nickname")
+            }
         }
     }
 }

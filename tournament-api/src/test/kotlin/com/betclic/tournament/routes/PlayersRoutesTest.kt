@@ -81,7 +81,6 @@ class PlayersRoutesTest {
         assertEquals(playerInRepository.id, playerReturned.id)
     }
 
-
     @Test
     fun canAddPlayerWithOnlyNickname() = testApplication {
         application {
@@ -96,6 +95,23 @@ class PlayersRoutesTest {
         }
 
         assertEquals(HttpStatusCode.Created, response.status)
+    }
+
+    @Test
+    fun canHandleDuplicatePlayerNickname() = testApplication {
+        application {
+            repositories = MemoryRepositories()
+            repositories.players().add(Player("Michel"))
+        }
+        val client = createClient()
+
+        val response = client.post("/players") {
+            contentType(ContentType.Application.Json)
+            setBody(PlayerView("Michel"))
+        }
+
+        assertEquals(HttpStatusCode.BadRequest, response.status)
+        assertEquals("Duplicate player nickname", response.bodyAsText())
     }
 
     private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
