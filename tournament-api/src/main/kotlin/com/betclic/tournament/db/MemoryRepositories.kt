@@ -32,6 +32,8 @@ class MemoryPlayerRepository : PlayerRepository() {
         updatedItems.add(player)
     }
 
+    override fun getById(id: String): Player? = items.find { it.id == id }
+
     override val count: Int
         get() = items.size
 

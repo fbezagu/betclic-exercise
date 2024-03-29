@@ -7,15 +7,6 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class PlayerView(
-    val nickname: String,
-    val id: String = "",
-    val score: Int = 0
-) {
-}
 
 fun Route.playersRouting() {
     route("/players") {
