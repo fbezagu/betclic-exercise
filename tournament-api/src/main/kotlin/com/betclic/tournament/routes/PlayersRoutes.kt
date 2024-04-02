@@ -13,7 +13,7 @@ fun Route.playersRouting() {
         get {
             val players = currentTournament.getPlayers()
 
-            call.respond(players.map { PlayerView(it.nickname) })
+            call.respond(players.map { PlayerView.fromPlayer(it) })
         }
         delete {
             call.respond(HttpStatusCode.OK)
@@ -23,7 +23,7 @@ fun Route.playersRouting() {
             val requestPlayer = call.receive<PlayerView>()
             try {
                 val player = currentTournament.addPlayer(requestPlayer.nickname)
-                call.respond(HttpStatusCode.Created, PlayerView(player.nickname, player.id, 0))
+                call.respond(HttpStatusCode.Created, PlayerView.fromPlayer(player))
             } catch (e: PlayerAlreadyExistsException) {
                 call.respond(HttpStatusCode.BadRequest, "Duplicate player nickname")
             }

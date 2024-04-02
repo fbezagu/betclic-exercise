@@ -114,5 +114,21 @@ class PlayersRoutesTest {
         assertEquals("Duplicate player nickname", response.bodyAsText())
     }
 
+    @Test
+    fun idAndScoreReturnedWhenGettingAllPlayers() = testApplication {
+        application {
+            repositories = MemoryRepositories()
+            val menfin = Player("menfin")
+            menfin.score = 43
+            repositories.players().add(menfin)
+        }
+
+        val response = createClient().get("/players")
+
+        val players = response.body<List<PlayerView>>()
+        assertEquals(repositories.players().getByNickname("menfin")?.id, players.get(0).id)
+        assertEquals(43, players.get(0).score)
+    }
+
     private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
 }
