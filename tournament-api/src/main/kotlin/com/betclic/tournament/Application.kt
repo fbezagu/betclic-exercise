@@ -9,9 +9,15 @@ import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
     repositories = MemoryRepositories()
-    repositories.players().add(Player("Pierre"))
-    repositories.players().add(Player("Paul"))
-    repositories.players().add(Player("Jack"))
+    val pierre = Player("Pierre")
+    pierre.score = 5
+    val paul = Player("Paul")
+    paul.score = 8
+    val jack = Player("Jack")
+    jack.score = 2
+    repositories.players().add(pierre)
+    repositories.players().add(paul)
+    repositories.players().add(jack)
 
     io.ktor.server.netty.EngineMain.main(args)
 }

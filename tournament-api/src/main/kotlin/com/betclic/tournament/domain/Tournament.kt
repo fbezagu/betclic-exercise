@@ -22,6 +22,10 @@ class Tournament {
     fun playerRank(player: Player): Int {
         return repositories.players().countWithScoreHigherThan(player.score) + 1
     }
+
+    fun getRankings(): List<Player> {
+        return repositories.players().allSortedByScore()
+    }
 }
 
 var currentTournament = Tournament()

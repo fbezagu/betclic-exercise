@@ -38,6 +38,10 @@ class MemoryPlayerRepository : PlayerRepository() {
         return items.filter { it.score > score }.size
     }
 
+    override fun allSortedByScore(): List<Player> {
+        return items.sortedByDescending { it.score }
+    }
+
     override val count: Int
         get() = items.size
 

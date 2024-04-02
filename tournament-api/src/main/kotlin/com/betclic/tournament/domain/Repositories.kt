@@ -12,6 +12,8 @@ abstract class PlayerRepository {
     abstract fun update(player: Player)
     abstract fun getById(id: String): Player?
     abstract fun countWithScoreHigherThan(score: Int): Int
+    abstract fun allSortedByScore(): List<Player>
+
     abstract val count: Int
 }
 
