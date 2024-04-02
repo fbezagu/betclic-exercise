@@ -11,7 +11,7 @@ abstract class PlayerRepository {
     abstract fun getByNickname(nickname: String): Player?
     abstract fun update(player: Player)
     abstract fun getById(id: String): Player?
-
+    abstract fun countWithScoreHigherThan(score: Int): Int
     abstract val count: Int
 }
 

@@ -27,7 +27,7 @@ fun Route.playerRouting() {
             val id = call.parameters["id"] ?: return@get call.respond(
                 currentTournament.getPlayers().map { PlayerView(it.nickname) })
             val player = repositories.players().getById(id) ?: return@get call.respond(HttpStatusCode.NotFound)
-            val playerView = PlayerView(player.nickname, player.id, player.score, 1)
+            val playerView = PlayerView(player.nickname, player.id, player.score, currentTournament.playerRank(player))
             call.respond(HttpStatusCode.OK, playerView)
         }
     }

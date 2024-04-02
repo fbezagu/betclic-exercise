@@ -18,6 +18,10 @@ class Tournament {
         player.score = newScore
         repositories.players().update(player)
     }
+
+    fun playerRank(player: Player): Int {
+        return repositories.players().countWithScoreHigherThan(player.score) + 1
+    }
 }
 
 var currentTournament = Tournament()

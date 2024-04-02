@@ -64,7 +64,6 @@ class PlayerRoutesTest {
         assertEquals("Player with id <unknown> not found", response.bodyAsText())
     }
 
-
     @Test
     fun canGetOnePlayer() = testApplication {
         application {}
@@ -104,6 +103,22 @@ class PlayerRoutesTest {
         assertEquals(HttpStatusCode.OK, response.status)
         val players = response.body<List<PlayerView>>()
         assertEquals(1, players.size)
+    }
+
+    @Test
+    fun canGetOnePlayerRank() = testApplication {
+        application {}
+        repositories = MemoryRepositories()
+        val pierre = Player("Pierre")
+        repositories.players().add(pierre)
+        val michel = Player("Michel")
+        michel.score = 8
+        repositories.players().add(michel)
+        val client = createClient()
+
+        val response = client.get("/players/${pierre.id}")
+
+        assertEquals(2, response.body<PlayerView>().rank)
     }
 
     private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }

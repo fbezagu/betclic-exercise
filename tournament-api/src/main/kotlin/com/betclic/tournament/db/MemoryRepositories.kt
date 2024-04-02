@@ -34,6 +34,10 @@ class MemoryPlayerRepository : PlayerRepository() {
 
     override fun getById(id: String): Player? = items.find { it.id == id }
 
+    override fun countWithScoreHigherThan(score: Int): Int {
+        return items.filter { it.score > score }.size
+    }
+
     override val count: Int
         get() = items.size
 

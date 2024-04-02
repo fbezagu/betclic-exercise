@@ -75,4 +75,28 @@ class TournamentTest {
 
         assertEquals(8, repositories.players().all()[1].score)
     }
+
+    @Test
+    fun playerIsRankedFirstWhenAloneInTournament() {
+        val tournament = Tournament()
+        val pierre = tournament.addPlayer("Pierre")
+
+        val rank = tournament.playerRank(pierre)
+
+        assertEquals(1, rank)
+    }
+
+    @Test
+    fun canGetPlayerRankWhenSeveralPlayerHaveHigherScore() {
+        val tournament = Tournament()
+        val pierre = tournament.addPlayer("Pierre")
+        pierre.score = 5
+        tournament.addPlayer("Michel").score = 8
+        tournament.addPlayer("Paul").score = 10
+
+        val rank = tournament.playerRank(pierre)
+
+        assertEquals(3, rank)
+    }
+
 }
