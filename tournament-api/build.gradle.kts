@@ -29,6 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-server-cors")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("aws.sdk.kotlin:dynamodb:1.0.30")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("io.ktor:ktor-client-content-negotiation")
