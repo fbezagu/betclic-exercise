@@ -5,11 +5,12 @@ import com.betclic.tournament.domain.repositories
 import com.betclic.tournament.plugins.configureRouting
 import com.betclic.tournament.plugins.configureSerialization
 import io.ktor.server.application.*
+import io.ktor.server.netty.*
 
 fun main(args: Array<String>) {
     repositories = DynamoRepositories()
 
-    io.ktor.server.netty.EngineMain.main(args)
+    EngineMain.main(args)
 }
 
 fun Application.module() {
