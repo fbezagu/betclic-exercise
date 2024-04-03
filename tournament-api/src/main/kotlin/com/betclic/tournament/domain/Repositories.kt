@@ -4,17 +4,16 @@ abstract class Repositories {
     abstract fun players(): PlayerRepository
 }
 
-abstract class PlayerRepository {
-    abstract fun add(player: Player)
-    abstract fun all(): List<Player>
-    abstract fun clear()
-    abstract fun getByNickname(nickname: String): Player?
-    abstract fun update(player: Player)
-    abstract fun getById(id: String): Player?
-    abstract fun countWithScoreHigherThan(score: Int): Int
-    abstract fun allSortedByScore(): List<Player>
-
-    abstract val count: Int
+interface PlayerRepository {
+    val count: Int
+    fun add(player: Player)
+    fun all(): List<Player>
+    fun clear()
+    fun getByNickname(nickname: String): Player?
+    fun update(player: Player)
+    fun getById(id: String): Player?
+    fun countWithScoreHigherThan(score: Int): Int
+    fun allSortedByScore(): List<Player>
 }
 
 class NoRepositories : Repositories() {

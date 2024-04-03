@@ -1,7 +1,7 @@
 package com.betclic.tournament.db
 
-import com.betclic.tournament.domain.Player
 import com.betclic.tournament.domain.PlayerRepository
+import com.betclic.tournament.domain.Player
 import com.betclic.tournament.domain.Repositories
 import java.util.*
 
@@ -13,7 +13,7 @@ class MemoryRepositories : Repositories() {
     }
 }
 
-class MemoryPlayerRepository : PlayerRepository() {
+class MemoryPlayerRepository : PlayerRepository {
     private val items = mutableListOf<Player>()
     val updatedItems: MutableList<Player> = mutableListOf()
 

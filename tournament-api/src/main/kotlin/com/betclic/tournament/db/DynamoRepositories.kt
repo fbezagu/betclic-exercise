@@ -4,8 +4,8 @@ import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.*
 import aws.sdk.kotlin.services.dynamodb.waiters.waitUntilTableExists
 import aws.smithy.kotlin.runtime.net.url.Url
-import com.betclic.tournament.domain.Player
 import com.betclic.tournament.domain.PlayerRepository
+import com.betclic.tournament.domain.Player
 import com.betclic.tournament.domain.Repositories
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -16,7 +16,7 @@ class DynamoRepositories : Repositories() {
 
 private const val PLAYERS_TABLE_NAME = "Players"
 
-class DynamoPlayerRepository : PlayerRepository() {
+class DynamoPlayerRepository : PlayerRepository {
     override fun add(player: Player) {
         val itemValues = mutableMapOf<String, AttributeValue>()
         player.id = UUID.randomUUID().toString()
