@@ -9,6 +9,7 @@ import io.ktor.server.netty.*
 
 fun main(args: Array<String>) {
     repositories = DynamoRepositories()
+    repositories.init()
 
     EngineMain.main(args)
 }

@@ -12,47 +12,24 @@ import java.util.*
 
 class DynamoRepositories : Repositories() {
     override fun players(): PlayerRepository = DynamoPlayerRepository()
+    override fun init() {
+        DynamoPlayerRepository().init()
+    }
 }
 
 private const val PLAYERS_TABLE_NAME = "Players"
 
 class DynamoPlayerRepository : PlayerRepository {
-    override fun add(player: Player) {
-        val itemValues = mutableMapOf<String, AttributeValue>()
-        player.id = UUID.randomUUID().toString()
-        itemValues["Id"] = AttributeValue.S(player.id)
-        itemValues["Nickname"] = AttributeValue.S(player.nickname)
-        itemValues["Score"] = AttributeValue.N(player.score.toString())
-
-        val request = PutItemRequest {
-            tableName = PLAYERS_TABLE_NAME
-            item = itemValues
+    fun init() {
+        if (!tableExists()) {
+            println("Table players doesn't exist ---> CREATE")
+            createTable()
         }
-
-        getClient().use { ddb -> runBlocking { ddb.putItem(request) } }
     }
 
-    override fun update(player: Player) {
-        val itemKey = mutableMapOf<String, AttributeValue>()
-        itemKey["Id"] = AttributeValue.S(player.id)
-        val updatedValues = mutableMapOf<String, AttributeValueUpdate>()
-        updatedValues["Score"] = AttributeValueUpdate {
-            value = AttributeValue.N(player.score.toString())
-            action = AttributeAction.Put
-        }
-        updatedValues["Nickname"] = AttributeValueUpdate {
-            value = AttributeValue.S(player.nickname)
-            action = AttributeAction.Put
-        }
-
-        val request = UpdateItemRequest {
-            tableName = PLAYERS_TABLE_NAME
-            key = itemKey
-            attributeUpdates = updatedValues
-        }
-
-        getClient().use { ddb -> runBlocking { ddb.updateItem(request) } }
-    }
+    /*
+     Query functions
+     */
 
     override fun all(): List<Player> {
         val request = ScanRequest { tableName = PLAYERS_TABLE_NAME }
@@ -64,53 +41,6 @@ class DynamoPlayerRepository : PlayerRepository {
                 response.items?.forEach { item -> result.add(playerFromItem(item)) }
             }
             return result
-        }
-    }
-
-    override fun clear() {
-        dropTable()
-        createTable()
-    }
-
-    private fun dropTable() {
-        getClient().use { ddb ->
-            runBlocking {
-                ddb.deleteTable(DeleteTableRequest {
-                    tableName = PLAYERS_TABLE_NAME
-                })
-            }
-        }
-    }
-
-    private fun createTable() {
-        val attDef = AttributeDefinition {
-            attributeName = "Id"
-            attributeType = ScalarAttributeType.S
-        }
-
-        val keySchemaVal = KeySchemaElement {
-            attributeName = "Id"
-            keyType = KeyType.Hash
-        }
-
-        val provisionedVal = ProvisionedThroughput {
-            readCapacityUnits = 1
-            writeCapacityUnits = 1
-        }
-
-        val request = CreateTableRequest {
-            attributeDefinitions = listOf(attDef)
-            keySchema = listOf(keySchemaVal)
-            provisionedThroughput = provisionedVal
-            tableName = PLAYERS_TABLE_NAME
-        }
-
-        getClient().use { ddb ->
-            runBlocking {
-                val response = ddb.createTable(request)
-                ddb.waitUntilTableExists { tableName = PLAYERS_TABLE_NAME }
-                response.tableDescription!!.tableArn.toString()
-            }
         }
     }
 
@@ -162,6 +92,119 @@ class DynamoPlayerRepository : PlayerRepository {
             }
         }
 
+    /*
+    Update data functions
+     */
+
+    override fun add(player: Player) {
+        val itemValues = mutableMapOf<String, AttributeValue>()
+        player.id = UUID.randomUUID().toString()
+        itemValues["Id"] = AttributeValue.S(player.id)
+        itemValues["Nickname"] = AttributeValue.S(player.nickname)
+        itemValues["Score"] = AttributeValue.N(player.score.toString())
+
+        val request = PutItemRequest {
+            tableName = PLAYERS_TABLE_NAME
+            item = itemValues
+        }
+
+        getClient().use { ddb -> runBlocking { ddb.putItem(request) } }
+    }
+
+    override fun update(player: Player) {
+        val itemKey = mutableMapOf<String, AttributeValue>()
+        itemKey["Id"] = AttributeValue.S(player.id)
+        val updatedValues = mutableMapOf<String, AttributeValueUpdate>()
+        updatedValues["Score"] = AttributeValueUpdate {
+            value = AttributeValue.N(player.score.toString())
+            action = AttributeAction.Put
+        }
+        updatedValues["Nickname"] = AttributeValueUpdate {
+            value = AttributeValue.S(player.nickname)
+            action = AttributeAction.Put
+        }
+
+        val request = UpdateItemRequest {
+            tableName = PLAYERS_TABLE_NAME
+            key = itemKey
+            attributeUpdates = updatedValues
+        }
+
+        getClient().use { ddb -> runBlocking { ddb.updateItem(request) } }
+    }
+
+    override fun clear() {
+        dropTable()
+        createTable()
+    }
+
+    /*
+     Table manipulation functions
+     */
+
+    private fun createTable() {
+        val attDef = AttributeDefinition {
+            attributeName = "Id"
+            attributeType = ScalarAttributeType.S
+        }
+
+        val keySchemaVal = KeySchemaElement {
+            attributeName = "Id"
+            keyType = KeyType.Hash
+        }
+
+        val provisionedVal = ProvisionedThroughput {
+            readCapacityUnits = 1
+            writeCapacityUnits = 1
+        }
+
+        val request = CreateTableRequest {
+            attributeDefinitions = listOf(attDef)
+            keySchema = listOf(keySchemaVal)
+            provisionedThroughput = provisionedVal
+            tableName = PLAYERS_TABLE_NAME
+        }
+
+        getClient().use { ddb ->
+            runBlocking {
+                val response = ddb.createTable(request)
+                ddb.waitUntilTableExists { tableName = PLAYERS_TABLE_NAME }
+                response.tableDescription!!.tableArn.toString()
+            }
+        }
+    }
+
+    private fun dropTable() {
+        getClient().use { ddb ->
+            runBlocking {
+                ddb.deleteTable(DeleteTableRequest {
+                    tableName = PLAYERS_TABLE_NAME
+                })
+            }
+        }
+    }
+
+    private fun tableExists(): Boolean {
+        val request = DescribeTableRequest { tableName = PLAYERS_TABLE_NAME }
+
+        getClient().use { ddb ->
+            var result: Boolean
+            runBlocking {
+                try {
+                    ddb.describeTable(request)
+                    result = true
+                } catch (e: ResourceNotFoundException) {
+                    result = false
+                }
+            }
+            return result
+        }
+    }
+
+
+    /*
+    Utility functions
+     */
     private fun getClient(): DynamoDbClient {
         return DynamoDbClient {
             region = "eu-west-3"
