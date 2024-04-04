@@ -1,13 +1,11 @@
 package com.betclic.tournament.routes
 
 import com.betclic.tournament.domain.Player
-import com.betclic.tournament.domain.Repositories
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import org.junit.jupiter.api.Test
-import org.koin.test.get
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -15,8 +13,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
     @Test
     fun canUpdatePlayerScore() = withApp {
         val pierre = Player("Pierre")
-        val repositories: Repositories = get()
-        repositories.players().add(pierre)
+        playerRepository.add(pierre)
         val client = createClient()
 
         val response = client.put("/players/${pierre.id}") {
@@ -57,8 +54,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
     @Test
     fun canGetOnePlayer() = withApp {
         val pierre = Player("Pierre")
-        val repositories: Repositories = get()
-        repositories.players().add(pierre)
+        playerRepository.add(pierre)
         val client = createClient()
 
         val response = client.get("/players/${pierre.id}")
@@ -79,8 +75,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
 
     @Test
     fun returnAllPlayersWhenNoNicknameProvided() = withApp {
-        val repositories: Repositories = get()
-        repositories.players().add(Player("Michel"))
+        playerRepository.add(Player("Michel"))
         val client = createClient()
 
         val response = client.get("/players/")
@@ -92,12 +87,11 @@ class PlayerRoutesTest : BaseRoutesTest() {
 
     @Test
     fun canGetOnePlayerRank() = withApp {
-        val repositories: Repositories = get()
         val pierre = Player("Pierre")
-        repositories.players().add(pierre)
+        playerRepository.add(pierre)
         val michel = Player("Michel")
         michel.score = 8
-        repositories.players().add(michel)
+        playerRepository.add(michel)
         val client = createClient()
 
         val response = client.get("/players/${pierre.id}")

@@ -13,6 +13,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
+import org.koin.test.get
 
 open class BaseRoutesTest : KoinTest {
     companion object {
@@ -39,5 +40,7 @@ open class BaseRoutesTest : KoinTest {
     }
 
     protected fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
+    protected val playerRepository get() = repositories().players()
+    private fun repositories(): Repositories = get()
 
 }

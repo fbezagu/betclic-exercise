@@ -1,20 +1,17 @@
 package com.betclic.tournament.routes
 
 import com.betclic.tournament.domain.Player
-import com.betclic.tournament.domain.Repositories
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import org.junit.jupiter.api.Test
-import org.koin.test.get
 import kotlin.test.assertEquals
 
 class RankingsRoutesTest : BaseRoutesTest(){
     @Test
     fun canGetPlayerRankings() = withApp {
-        val repositories: Repositories = get()
-        repositories.players().add(playerWithScore("menfin", 8))
-        repositories.players().add(playerWithScore("Paul", 16))
+        playerRepository.add(playerWithScore("menfin", 8))
+        playerRepository.add(playerWithScore("Paul", 16))
         val client = createClient()
 
         val response = client.get("/rankings")
