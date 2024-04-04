@@ -10,4 +10,4 @@ if [ ! -d "localstack" ]; then
 fi
 
 $SCRIPT_DIR/localstack/localstack start &
-$SCRIPT_DIR/tournament-api/start.sh
+$SCRIPT_DIR/localstack/localstack wait && $SCRIPT_DIR/tournament-api/start.sh
