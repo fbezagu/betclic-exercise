@@ -1,22 +1,18 @@
 package com.betclic.tournament.routes
 
-import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.Player
-import com.betclic.tournament.domain.repositories
+import com.betclic.tournament.domain.Repositories
 import io.ktor.client.call.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.testing.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.koin.test.get
 import kotlin.test.assertEquals
 
-class RankingsRoutesTest {
+class RankingsRoutesTest : BaseRoutesTest(){
     @Test
-    fun canGetPlayerRankings() = testApplication {
-        application { }
-        repositories = MemoryRepositories()
+    fun canGetPlayerRankings() = withApp {
+        val repositories: Repositories = get()
         repositories.players().add(playerWithScore("menfin", 8))
         repositories.players().add(playerWithScore("Paul", 16))
         val client = createClient()
@@ -35,7 +31,5 @@ class RankingsRoutesTest {
         player.score = score
         return player
     }
-
-    private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
 
 }

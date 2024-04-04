@@ -1,25 +1,21 @@
 package com.betclic.tournament.routes
 
-import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.Player
-import com.betclic.tournament.domain.repositories
+import com.betclic.tournament.domain.Repositories
 import io.ktor.client.call.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.testing.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.koin.test.get
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class PlayerRoutesTest {
+class PlayerRoutesTest : BaseRoutesTest() {
     @Test
-    fun canUpdatePlayerScore() = testApplication {
-        application { }
+    fun canUpdatePlayerScore() = withApp {
         val pierre = Player("Pierre")
-        repositories = MemoryRepositories()
+        val repositories: Repositories = get()
         repositories.players().add(pierre)
         val client = createClient()
 
@@ -33,11 +29,8 @@ class PlayerRoutesTest {
     }
 
     @Test
-    fun errorThrownOnPutWhenNoId() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-        }
-        val client = createClient { install(ContentNegotiation) { json() } }
+    fun errorThrownOnPutWhenNoId() = withApp {
+        val client = createClient()
 
         val response = client.put("/players/") {
             contentType(ContentType.Application.Json)
@@ -49,11 +42,8 @@ class PlayerRoutesTest {
     }
 
     @Test
-    fun errorThrownOnPutWhenPlayerWithIdNotFound() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-        }
-        val client = createClient { install(ContentNegotiation) { json() } }
+    fun errorThrownOnPutWhenPlayerWithIdNotFound() = withApp {
+        val client = createClient()
 
         val response = client.put("/players/unknown") {
             contentType(ContentType.Application.Json)
@@ -65,10 +55,9 @@ class PlayerRoutesTest {
     }
 
     @Test
-    fun canGetOnePlayer() = testApplication {
-        application {}
+    fun canGetOnePlayer() = withApp {
         val pierre = Player("Pierre")
-        repositories = MemoryRepositories()
+        val repositories: Repositories = get()
         repositories.players().add(pierre)
         val client = createClient()
 
@@ -82,19 +71,15 @@ class PlayerRoutesTest {
     }
 
     @Test
-    fun canHandlePlayerNotFound() = testApplication {
-        application { }
-        repositories = MemoryRepositories()
-
+    fun canHandlePlayerNotFound() = withApp {
         val response = client.get("/players/abcd")
 
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
     @Test
-    fun returnAllPlayersWhenNoNicknameProvided() = testApplication {
-        application { }
-        repositories = MemoryRepositories()
+    fun returnAllPlayersWhenNoNicknameProvided() = withApp {
+        val repositories: Repositories = get()
         repositories.players().add(Player("Michel"))
         val client = createClient()
 
@@ -106,9 +91,8 @@ class PlayerRoutesTest {
     }
 
     @Test
-    fun canGetOnePlayerRank() = testApplication {
-        application {}
-        repositories = MemoryRepositories()
+    fun canGetOnePlayerRank() = withApp {
+        val repositories: Repositories = get()
         val pierre = Player("Pierre")
         repositories.players().add(pierre)
         val michel = Player("Michel")
@@ -120,6 +104,5 @@ class PlayerRoutesTest {
 
         assertEquals(2, response.body<PlayerView>().rank)
     }
-
-    private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
 }
+

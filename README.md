@@ -36,3 +36,5 @@ Toutes les représentations (envoyées et retournées) sont au format JSON.
     - Tester les inconsistances de types de données
 - Script de démarrage
   - Gérer MacOS et Windows
+- Créer un Dockerfile (ou autre conteneur)
+- Mettre en place la CI/CD (Jenkinsfile, etc)

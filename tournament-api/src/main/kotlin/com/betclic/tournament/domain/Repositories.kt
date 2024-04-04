@@ -16,11 +16,3 @@ interface PlayerRepository {
     fun countWithScoreHigherThan(score: Int): Int
     fun allSortedByScore(): List<Player>
 }
-
-class NoRepositories : Repositories() {
-    override fun players(): PlayerRepository {
-        throw Exception("Repositories aren’t initialized")
-    }
-}
-
-var repositories: Repositories = NoRepositories()

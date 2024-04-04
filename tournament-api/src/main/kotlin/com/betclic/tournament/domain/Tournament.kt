@@ -1,6 +1,7 @@
 package com.betclic.tournament.domain
 
-class Tournament {
+
+class Tournament(val repositories: Repositories) {
     fun getPlayers(): List<Player> = repositories.players().all()
 
     fun end() = repositories.players().clear()
@@ -27,5 +28,3 @@ class Tournament {
         return repositories.players().allSortedByScore()
     }
 }
-
-var currentTournament = Tournament()

@@ -8,6 +8,10 @@ import java.util.*
 class MemoryRepositories : Repositories() {
     private val playerRepository = MemoryPlayerRepository()
 
+    override fun init() {
+        println("Init memory repositories: nothing to do")
+    }
+
     override fun players(): PlayerRepository {
         return playerRepository
     }

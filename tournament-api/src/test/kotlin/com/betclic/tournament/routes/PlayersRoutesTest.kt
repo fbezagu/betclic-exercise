@@ -1,26 +1,19 @@
 package com.betclic.tournament.routes
 
-import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.Player
-import com.betclic.tournament.domain.repositories
+import com.betclic.tournament.domain.Repositories
 import io.ktor.client.call.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.testing.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.koin.test.get
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class PlayersRoutesTest {
+class PlayersRoutesTest : BaseRoutesTest() {
     @Test
-    fun canGetPlayersWhenNone() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-        }
-
+    fun canGetPlayersWhenNone() = withApp {
         val response = client.get("/players")
 
         assertEquals(HttpStatusCode.OK, response.status)
@@ -28,12 +21,10 @@ class PlayersRoutesTest {
     }
 
     @Test
-    fun canGetPlayersWhenNotEmpty() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-            repositories.players().add(Player("menfin"))
-            repositories.players().add(Player("Paul"))
-        }
+    fun canGetPlayersWhenNotEmpty() = withApp {
+        val repositories: Repositories = get()
+        repositories.players().add(Player("menfin"))
+        repositories.players().add(Player("Paul"))
 
         val response = createClient().get("/players")
 
@@ -45,11 +36,9 @@ class PlayersRoutesTest {
     }
 
     @Test
-    fun canRemoveAllPlayers() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-            repositories.players().add(Player(""))
-        }
+    fun canRemoveAllPlayers() = withApp {
+        val repositories: Repositories = get()
+        repositories.players().add(Player(""))
 
         val response = client.delete("/players")
 
@@ -58,11 +47,9 @@ class PlayersRoutesTest {
     }
 
     @Test
-    fun canAddPlayer() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-            repositories.players().clear()
-        }
+    fun canAddPlayer() = withApp {
+        val repositories: Repositories = get()
+        repositories.players().clear()
         val client = createClient()
 
         val response = client.post("/players") {
@@ -82,11 +69,9 @@ class PlayersRoutesTest {
     }
 
     @Test
-    fun canAddPlayerWithOnlyNickname() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-            repositories.players().clear()
-        }
+    fun canAddPlayerWithOnlyNickname() = withApp {
+        val repositories: Repositories = get()
+        repositories.players().clear()
         val client = createClient()
 
         val response = client.post("/players") {
@@ -98,11 +83,9 @@ class PlayersRoutesTest {
     }
 
     @Test
-    fun canHandleDuplicatePlayerNickname() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-            repositories.players().add(Player("Michel"))
-        }
+    fun canHandleDuplicatePlayerNickname() = withApp {
+        val repositories: Repositories = get()
+        repositories.players().add(Player("Michel"))
         val client = createClient()
 
         val response = client.post("/players") {
@@ -115,13 +98,11 @@ class PlayersRoutesTest {
     }
 
     @Test
-    fun idAndScoreReturnedWhenGettingAllPlayers() = testApplication {
-        application {
-            repositories = MemoryRepositories()
-            val menfin = Player("menfin")
-            menfin.score = 43
-            repositories.players().add(menfin)
-        }
+    fun idAndScoreReturnedWhenGettingAllPlayers() = withApp {
+        val repositories: Repositories = get()
+        val menfin = Player("menfin")
+        menfin.score = 43
+        repositories.players().add(menfin)
 
         val response = createClient().get("/players")
 
@@ -129,6 +110,4 @@ class PlayersRoutesTest {
         assertEquals(repositories.players().getByNickname("menfin")?.id, players.get(0).id)
         assertEquals(43, players.get(0).score)
     }
-
-    private fun ApplicationTestBuilder.createClient() = createClient { install(ContentNegotiation) { json() } }
 }
