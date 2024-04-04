@@ -20,9 +20,19 @@ L’API fournit les ressources suivantes :
 | Joueurs               | /players     | Liste des joueurs non triée                                                 | -                               | Ajoute un nouveau joueur | Supprime tous les joueurs du tournoi |
 | Un joueur             | /player/{id} | Représentation d’un joueur avec son score et son classement dans le tournoi | Met à jour le score d’un joueur | -                        | -                                    |       
 
-Toutes les représentations (envoyées et retournées) sont au format JSON.
+Toutes les représentations (envoyées et retournées) sont au format JSON suivant :
+
+```
+{
+  "id": "abcd38"
+  "nickname": "Rémi",
+  "score": 25,
+  "rank": 2
+}
+```
 
 # Reste à faire avant mise en production
+
 - Authentification
 - Suppression du rank dans les requêtes qui ne le renseignent pas
 - BackOffice d’administration
@@ -32,6 +42,6 @@ Toutes les représentations (envoyées et retournées) sont au format JSON.
     - countWithScoreHigherThan plus performant, en utilisant un filtre + count natifs de dynamo
     - Tester les inconsistances de types de données
 - Script de démarrage
-  - Gérer MacOS et Windows
+    - Gérer MacOS et Windows
 - Créer un Dockerfile (ou autre conteneur)
 - Mettre en place la CI/CD (Jenkinsfile, etc)
