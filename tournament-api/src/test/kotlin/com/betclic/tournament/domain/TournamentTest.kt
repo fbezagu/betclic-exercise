@@ -59,7 +59,7 @@ class TournamentTest {
     }
 
     @Test
-    fun canUpdatePlayerScore() {
+    fun `can update player score`() {
         val tournament = Tournament(repositories)
         val michel = Player("Michel")
         repositories.players().add(michel)
@@ -72,7 +72,7 @@ class TournamentTest {
     }
 
     @Test
-    fun canUpdatePlayerScoreWhenNotFirstInRepository() {
+    fun `can update player score when not first in repository`() {
         val tournament = Tournament(repositories)
         repositories.players().add(Player("Michel"))
         val paul = Player("Paul")
@@ -84,7 +84,7 @@ class TournamentTest {
     }
 
     @Test
-    fun playerIsRankedFirstWhenAloneInTournament() {
+    fun `player is ranked first when alone in tournament`() {
         val tournament = Tournament(repositories)
         val pierre = tournament.addPlayer("Pierre")
 
@@ -94,7 +94,7 @@ class TournamentTest {
     }
 
     @Test
-    fun canGetPlayerRankWhenSeveralPlayerHaveHigherScore() {
+    fun `can get player rank when several player have higher score`() {
         val tournament = Tournament(repositories)
         val pierre = tournament.addPlayer("Pierre")
         pierre.score = 5

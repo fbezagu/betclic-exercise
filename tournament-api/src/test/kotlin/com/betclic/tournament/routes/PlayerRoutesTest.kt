@@ -11,7 +11,7 @@ import kotlin.test.assertNotNull
 
 class PlayerRoutesTest : BaseRoutesTest() {
     @Test
-    fun canUpdatePlayerScore() = withApp {
+    fun `can update player score`() = withApp {
         val pierre = Player("Pierre")
         playerRepository.add(pierre)
         val client = createClient()
@@ -26,7 +26,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun errorThrownOnPutWhenNoId() = withApp {
+    fun `error thrown on put when no id`() = withApp {
         val client = createClient()
 
         val response = client.put("/players/") {
@@ -39,7 +39,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun errorThrownOnPutWhenPlayerWithIdNotFound() = withApp {
+    fun `error thrown on put when player with id not found`() = withApp {
         val client = createClient()
 
         val response = client.put("/players/unknown") {
@@ -52,7 +52,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun canGetOnePlayer() = withApp {
+    fun `can get one player`() = withApp {
         val pierre = Player("Pierre")
         playerRepository.add(pierre)
         val client = createClient()
@@ -67,14 +67,14 @@ class PlayerRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun canHandlePlayerNotFound() = withApp {
+    fun `can handle player not found`() = withApp {
         val response = client.get("/players/abcd")
 
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
     @Test
-    fun returnAllPlayersWhenNoNicknameProvided() = withApp {
+    fun `return all players when no nickname provided`() = withApp {
         playerRepository.add(Player("Michel"))
         val client = createClient()
 
@@ -86,7 +86,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun canGetOnePlayerRank() = withApp {
+    fun `can get one player rank`() = withApp {
         val pierre = Player("Pierre")
         playerRepository.add(pierre)
         val michel = Player("Michel")

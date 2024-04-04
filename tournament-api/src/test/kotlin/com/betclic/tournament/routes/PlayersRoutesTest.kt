@@ -11,7 +11,7 @@ import kotlin.test.assertNotNull
 
 class PlayersRoutesTest : BaseRoutesTest() {
     @Test
-    fun canGetPlayersWhenNone() = withApp {
+    fun `can get players when none`() = withApp {
         val response = client.get("/players")
 
         assertEquals(HttpStatusCode.OK, response.status)
@@ -19,7 +19,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun canGetPlayersWhenNotEmpty() = withApp {
+    fun `can get players when not empty`() = withApp {
         playerRepository.add(Player("menfin"))
         playerRepository.add(Player("Paul"))
 
@@ -33,7 +33,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun canRemoveAllPlayers() = withApp {
+    fun `can remove all players`() = withApp {
         playerRepository.add(Player(""))
 
         val response = client.delete("/players")
@@ -43,7 +43,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun canAddPlayer() = withApp {
+    fun `can add player`() = withApp {
         playerRepository.clear()
         val client = createClient()
 
@@ -63,7 +63,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun canAddPlayerWithOnlyNickname() = withApp {
+    fun `can add player with only nickname`() = withApp {
         playerRepository.clear()
         val client = createClient()
 
@@ -76,7 +76,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun canHandleDuplicatePlayerNickname() = withApp {
+    fun `can handle duplicate player nickname`() = withApp {
         playerRepository.add(Player("Michel"))
         val client = createClient()
 
@@ -90,7 +90,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
     }
 
     @Test
-    fun idAndScoreReturnedWhenGettingAllPlayers() = withApp {
+    fun `id and score returned when getting all players`() = withApp {
         val menfin = Player("menfin")
         menfin.score = 43
         playerRepository.add(menfin)

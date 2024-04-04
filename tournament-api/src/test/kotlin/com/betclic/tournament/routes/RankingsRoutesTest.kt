@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 
 class RankingsRoutesTest : BaseRoutesTest(){
     @Test
-    fun canGetPlayerRankings() = withApp {
+    fun `can get player rankings`() = withApp {
         playerRepository.add(playerWithScore("menfin", 8))
         playerRepository.add(playerWithScore("Paul", 16))
         val client = createClient()
