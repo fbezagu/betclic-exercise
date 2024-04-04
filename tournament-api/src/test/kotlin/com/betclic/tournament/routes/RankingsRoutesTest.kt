@@ -19,8 +19,8 @@ class RankingsRoutesTest : BaseRoutesTest(){
         assertEquals(HttpStatusCode.OK, response.status)
         val players = response.body<List<PlayerView>>()
         assertEquals(2, players.size)
-        assertEquals("Paul", players.get(0).nickname)
-        assertEquals("menfin", players.get(1).nickname)
+        assertEquals("Paul", players[0].nickname)
+        assertEquals("menfin", players[1].nickname)
     }
 
     private fun playerWithScore(nickname: String, score: Int): Player {

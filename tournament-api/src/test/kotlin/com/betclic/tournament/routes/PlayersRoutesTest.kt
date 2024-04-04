@@ -28,8 +28,8 @@ class PlayersRoutesTest : BaseRoutesTest() {
         assertEquals(HttpStatusCode.OK, response.status)
         val players = response.body<List<PlayerView>>()
         assertEquals(2, players.size)
-        assertEquals("menfin", players.get(0).nickname)
-        assertEquals("Paul", players.get(1).nickname)
+        assertEquals("menfin", players[0].nickname)
+        assertEquals("Paul", players[1].nickname)
     }
 
     @Test
@@ -54,7 +54,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
 
         assertEquals(HttpStatusCode.Created, response.status)
         assertEquals(1, playerRepository.count)
-        val playerInRepository = playerRepository.all().get(0)
+        val playerInRepository = playerRepository.all()[0]
         assertEquals("Michel", playerInRepository.nickname)
         val playerReturned = response.body<PlayerView>()
         assertNotNull(playerReturned)
@@ -98,7 +98,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
         val response = createClient().get("/players")
 
         val players = response.body<List<PlayerView>>()
-        assertEquals(playerRepository.getByNickname("menfin")?.id, players.get(0).id)
-        assertEquals(43, players.get(0).score)
+        assertEquals(playerRepository.getByNickname("menfin")?.id, players[0].id)
+        assertEquals(43, players[0].score)
     }
 }
