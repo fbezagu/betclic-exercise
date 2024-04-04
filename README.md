@@ -22,14 +22,11 @@ L’API fournit les ressources suivantes :
 
 Toutes les représentations (envoyées et retournées) sont au format JSON.
 
-# Reste à faire
-
-- Injection de dépendances avec Koin
+# Reste à faire avant mise en production
 - Authentification
 - Suppression du rank dans les requêtes qui ne le renseignent pas
 - BackOffice d’administration
 - Repository DynamoDB
-    - Créer la table au démarrage si besoin
     - Get par nickname plus performant
     - allSortedByScore plus performant, en utilisant un sort natif de dynamo
     - countWithScoreHigherThan plus performant, en utilisant un filtre + count natifs de dynamo
