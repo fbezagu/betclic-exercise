@@ -12,7 +12,7 @@ class TournamentTest {
     private val repositories = MemoryRepositories()
 
     @Test
-    fun canEndTournament() {
+    fun `can end tournament`() {
         val tournament = Tournament(repositories)
         repositories.players().add(Player("Paul"))
 
@@ -22,7 +22,7 @@ class TournamentTest {
     }
 
     @Test
-    fun canGetPlayers() {
+    fun `can get players`() {
         val tournament = Tournament(repositories)
         val paul = Player("Paul")
         val pierre = Player("pierre")
@@ -37,7 +37,7 @@ class TournamentTest {
     }
 
     @Test
-    fun canAddNewPlayer() {
+    fun `can add new player`() {
         val tournament = Tournament(repositories)
 
         val player = tournament.addPlayer("Michel")
@@ -47,7 +47,7 @@ class TournamentTest {
     }
 
     @Test
-    fun cantAddPlayerWithSameNickname() {
+    fun `cant add player with same nickname`() {
         val tournament = Tournament(repositories)
         repositories.players().add(Player("Paul"))
 
