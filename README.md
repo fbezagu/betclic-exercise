@@ -45,3 +45,5 @@ Toutes les représentations (envoyées et retournées) sont au format JSON suiva
     - Gérer MacOS et Windows
 - Créer un Dockerfile (ou autre conteneur)
 - Mettre en place la CI/CD (Jenkinsfile, etc)
+- Configurer DynamoDB sur AWS et pointer dessus
+- Configurer les credentials AWS avec IAM et les injecter
