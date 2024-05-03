@@ -5,6 +5,12 @@ import com.betclic.tournament.domain.addPlayer.AddPlayer
 import com.betclic.tournament.domain.addPlayer.AddPlayerUseCase
 import com.betclic.tournament.domain.endTournament.EndTournament
 import com.betclic.tournament.domain.endTournament.EndTournamentUseCase
+import com.betclic.tournament.domain.getAllPlayers.GetAllPlayers
+import com.betclic.tournament.domain.getAllPlayers.GetAllPlayersUseCase
+import com.betclic.tournament.domain.getPlayerInfo.GetPlayerInfo
+import com.betclic.tournament.domain.getPlayerInfo.GetPlayerInfoUseCase
+import com.betclic.tournament.domain.getRankings.GetRankings
+import com.betclic.tournament.domain.getRankings.GetRankingsUseCase
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScore
 import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScoreUseCase
@@ -43,6 +49,9 @@ open class BaseRoutesTest : KoinTest {
             single<Repositories> { MemoryRepositories() }
             single<AddPlayer> { AddPlayerUseCase(get()) }
             single<UpdatePlayerScore> { UpdatePlayerScoreUseCase(get()) }
+            single<GetAllPlayers> { GetAllPlayersUseCase(get()) }
+            single<GetPlayerInfo> { GetPlayerInfoUseCase(get()) }
+            single<GetRankings> { GetRankingsUseCase(get()) }
             single<EndTournament> { EndTournamentUseCase(get()) }
         }
     }

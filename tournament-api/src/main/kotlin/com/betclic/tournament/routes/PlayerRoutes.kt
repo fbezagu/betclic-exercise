@@ -1,6 +1,6 @@
 package com.betclic.tournament.routes
 
-import com.betclic.tournament.domain.getAllPlayers.GetAllPlayersUseCase
+import com.betclic.tournament.domain.getAllPlayers.GetAllPlayers
 import com.betclic.tournament.domain.getPlayerInfo.GetPlayerInfoUseCase
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.domain.model.Score
@@ -15,6 +15,7 @@ import org.koin.ktor.ext.inject
 fun Route.playerRouting() {
     val repositories by inject<Repositories>()
     val updatePlayerScore by inject<UpdatePlayerScore>()
+    val getAllPlayers by inject<GetAllPlayers>()
 
     route("/players/{id?}") {
         put {
@@ -30,9 +31,8 @@ fun Route.playerRouting() {
         }
 
         get {
-            val uc = GetAllPlayersUseCase(repositories)
             val id = call.parameters["id"] ?: return@get call.respond(
-                uc.getPlayers().map { PlayerView(it.nickname) })
+                getAllPlayers.getPlayers().map { PlayerView(it.nickname) })
             val getPlayerInfoUseCase = GetPlayerInfoUseCase(repositories)
             val player =
                 getPlayerInfoUseCase.getPlayerInfo(id) ?: return@get call.respond(HttpStatusCode.NotFound)
