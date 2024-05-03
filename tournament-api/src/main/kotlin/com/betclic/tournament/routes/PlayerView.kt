@@ -12,7 +12,7 @@ data class PlayerView(
 ) {
     companion object {
         fun fromPlayer(player: Player): PlayerView {
-            return PlayerView(player.nickname, player.id, player.score)
+            return PlayerView(player.nickname, player.id, player.score.i)
         }
     }
 }

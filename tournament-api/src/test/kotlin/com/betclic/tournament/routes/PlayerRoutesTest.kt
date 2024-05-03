@@ -1,6 +1,7 @@
 package com.betclic.tournament.routes
 
 import com.betclic.tournament.domain.Player
+import com.betclic.tournament.domain.Score
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -21,7 +22,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(18, playerRepository.getById(pierre.id)?.score)
+        assertEquals(Score(18), playerRepository.getById(pierre.id)?.score)
     }
 
     @Test
@@ -86,7 +87,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
     @Test
     fun `can get one player rank`() = withApp {
         val pierre = playerRepository.add(Player("Pierre"))
-        playerRepository.add(Player("Michel", score = 8))
+        playerRepository.add(Player("Michel", score = Score(8)))
         val client = createClient()
 
         val response = client.get("/players/${pierre.id}")

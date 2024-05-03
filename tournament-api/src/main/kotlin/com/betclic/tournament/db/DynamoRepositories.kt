@@ -7,6 +7,7 @@ import aws.smithy.kotlin.runtime.net.url.Url
 import com.betclic.tournament.domain.PlayerRepository
 import com.betclic.tournament.domain.Player
 import com.betclic.tournament.domain.Repositories
+import com.betclic.tournament.domain.Score
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -69,12 +70,12 @@ class DynamoPlayerRepository : PlayerRepository {
         }
     }
 
-    override fun countWithScoreHigherThan(score: Int): Int {
-        return all().filter { it.score > score }.size
+    override fun countWithScoreHigherThan(score: Score): Int {
+        return all().filter { it.score.i > score.i }.size
     }
 
     override fun allSortedByScore(): List<Player> {
-        return all().sortedByDescending { it.score }
+        return all().sortedByDescending { it.score.i }
     }
 
     override val count: Int
@@ -96,7 +97,7 @@ class DynamoPlayerRepository : PlayerRepository {
     Update data functions
      */
 
-    override fun add(player: Player) : Player{
+    override fun add(player: Player): Player {
         val itemValues = mutableMapOf<String, AttributeValue>()
         val playerWithId = player.copy(id = UUID.randomUUID().toString())
         itemValues["Id"] = AttributeValue.S(playerWithId.id)
@@ -216,7 +217,7 @@ class DynamoPlayerRepository : PlayerRepository {
     private fun playerFromItem(item: Map<String, AttributeValue>): Player {
         val id = item["Id"]?.asS() ?: ""
         val nickname = item["Nickname"]?.asS() ?: ""
-        val score = item["Score"]?.asN()?.toInt() ?: 0
+        val score = Score(item["Score"]?.asN()?.toInt() ?: 0)
         return Player(nickname, id, score)
     }
 }

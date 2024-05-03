@@ -1,6 +1,7 @@
 package com.betclic.tournament.routes
 
 import com.betclic.tournament.domain.Player
+import com.betclic.tournament.domain.Score
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -10,8 +11,8 @@ import kotlin.test.assertEquals
 class RankingsRoutesTest : BaseRoutesTest(){
     @Test
     fun `can get player rankings`() = withApp {
-        playerRepository.add(Player("menfin", score = 8))
-        playerRepository.add(Player("Paul", score = 16))
+        playerRepository.add(Player("menfin", score = Score(8)))
+        playerRepository.add(Player("Paul", score = Score(16)))
         val client = createClient()
 
         val response = client.get("/rankings")

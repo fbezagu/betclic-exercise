@@ -63,22 +63,20 @@ class TournamentTest {
         val tournament = Tournament(repositories)
         val michel = repositories.players().add(Player("Michel"))
 
-        tournament.updatePlayerScore(michel, 42)
+        tournament.updatePlayerScore(michel, Score(42))
 
-        assertEquals(42, repositories.players().all()[0].score)
-        val playerRepository = repositories.players() as MemoryPlayerRepository
+        assertEquals(Score(42), repositories.players().all()[0].score)
     }
 
     @Test
     fun `can update player score when not first in repository`() {
         val tournament = Tournament(repositories)
         repositories.players().add(Player("Michel"))
-        val paul = Player("Paul")
-        repositories.players().add(paul)
+        val paul = repositories.players().add(Player("Paul"))
 
-        tournament.updatePlayerScore(paul, 8)
+        tournament.updatePlayerScore(paul, Score(8))
 
-        assertEquals(8, repositories.players().all()[1].score)
+        assertEquals(Score(8), repositories.players().all()[1].score)
     }
 
     @Test
@@ -94,16 +92,16 @@ class TournamentTest {
     @Test
     fun `can get player rank when several player have higher score`() {
         val tournament = Tournament(repositories)
-        val pierre = playerInTournamentWithScore(tournament, "Pierre", 5)
-        playerInTournamentWithScore(tournament, "Michel", 8)
-        playerInTournamentWithScore(tournament, "Paul", 10)
+        val pierre = playerInTournamentWithScore(tournament, "Pierre", Score(5))
+        playerInTournamentWithScore(tournament, "Michel", Score(8))
+        playerInTournamentWithScore(tournament, "Paul", Score(10))
 
         val rank = tournament.playerRank(pierre)
 
         assertEquals(3, rank)
     }
 
-    private fun playerInTournamentWithScore(tournament: Tournament, nick: String, score: Int): Player {
+    private fun playerInTournamentWithScore(tournament: Tournament, nick: String, score: Score): Player {
         val player = tournament.addPlayer(nick)
         return tournament.updatePlayerScore(player, score)
     }

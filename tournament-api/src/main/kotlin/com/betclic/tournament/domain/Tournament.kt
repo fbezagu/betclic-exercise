@@ -13,7 +13,7 @@ class Tournament(val repositories: Repositories) {
         return repositories.players().add(Player(nickname))
     }
 
-    fun updatePlayerScore(player: Player, newScore: Int): Player {
+    fun updatePlayerScore(player: Player, newScore: Score): Player {
         val playerWithNewScore = player.copy(score = newScore)
         repositories.players().update(playerWithNewScore)
         return playerWithNewScore

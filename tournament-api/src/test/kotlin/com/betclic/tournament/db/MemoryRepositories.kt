@@ -3,6 +3,7 @@ package com.betclic.tournament.db
 import com.betclic.tournament.domain.PlayerRepository
 import com.betclic.tournament.domain.Player
 import com.betclic.tournament.domain.Repositories
+import com.betclic.tournament.domain.Score
 import java.util.*
 
 class MemoryRepositories : Repositories() {
@@ -39,12 +40,12 @@ class MemoryPlayerRepository : PlayerRepository {
 
     override fun getById(id: String): Player? = items.find { it.id == id }
 
-    override fun countWithScoreHigherThan(score: Int): Int {
-        return items.filter { it.score > score }.size
+    override fun countWithScoreHigherThan(score: Score): Int {
+        return items.filter { it.score.i > score.i }.size
     }
 
     override fun allSortedByScore(): List<Player> {
-        return items.sortedByDescending { it.score }
+        return items.sortedByDescending { it.score.i }
     }
 
     override val count: Int
