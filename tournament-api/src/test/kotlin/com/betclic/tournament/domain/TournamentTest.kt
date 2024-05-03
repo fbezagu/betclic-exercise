@@ -25,15 +25,15 @@ class TournamentTest {
     fun `can get players`() {
         val tournament = Tournament(repositories)
         val paul = Player("Paul")
-        val pierre = Player("pierre")
+        val pierre = Player("Pierre")
         repositories.players().add(paul)
         repositories.players().add(pierre)
 
         val players = tournament.getPlayers()
 
         assertEquals(2, players.size)
-        assertEquals(paul, players[0])
-        assertEquals(pierre, players[1])
+        assertEquals("Paul", players[0].nickname)
+        assertEquals("Pierre", players[1].nickname)
     }
 
     @Test
@@ -61,14 +61,12 @@ class TournamentTest {
     @Test
     fun `can update player score`() {
         val tournament = Tournament(repositories)
-        val michel = Player("Michel")
-        repositories.players().add(michel)
+        val michel = repositories.players().add(Player("Michel"))
 
         tournament.updatePlayerScore(michel, 42)
 
         assertEquals(42, repositories.players().all()[0].score)
         val playerRepository = repositories.players() as MemoryPlayerRepository
-        assertContains(playerRepository.updatedItems, michel)
     }
 
     @Test
@@ -96,14 +94,18 @@ class TournamentTest {
     @Test
     fun `can get player rank when several player have higher score`() {
         val tournament = Tournament(repositories)
-        val pierre = tournament.addPlayer("Pierre")
-        pierre.score = 5
-        tournament.addPlayer("Michel").score = 8
-        tournament.addPlayer("Paul").score = 10
+        val pierre = playerInTournamentWithScore(tournament, "Pierre", 5)
+        playerInTournamentWithScore(tournament, "Michel", 8)
+        playerInTournamentWithScore(tournament, "Paul", 10)
 
         val rank = tournament.playerRank(pierre)
 
         assertEquals(3, rank)
+    }
+
+    private fun playerInTournamentWithScore(tournament: Tournament, nick: String, score: Int): Player {
+        val player = tournament.addPlayer(nick)
+        return tournament.updatePlayerScore(player, score)
     }
 
 }

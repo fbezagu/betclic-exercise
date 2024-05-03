@@ -10,14 +10,13 @@ class Tournament(val repositories: Repositories) {
         if (repositories.players().getByNickname(nickname) != null) {
             throw PlayerAlreadyExistsException()
         }
-        val player = Player(nickname)
-        repositories.players().add(player)
-        return player
+        return repositories.players().add(Player(nickname))
     }
 
-    fun updatePlayerScore(player: Player, newScore: Int) {
-        player.score = newScore
-        repositories.players().update(player)
+    fun updatePlayerScore(player: Player, newScore: Int): Player {
+        val playerWithNewScore = player.copy(score = newScore)
+        repositories.players().update(playerWithNewScore)
+        return playerWithNewScore
     }
 
     fun playerRank(player: Player): Int {

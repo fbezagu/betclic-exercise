@@ -19,11 +19,11 @@ class MemoryRepositories : Repositories() {
 
 class MemoryPlayerRepository : PlayerRepository {
     private val items = mutableListOf<Player>()
-    val updatedItems: MutableList<Player> = mutableListOf()
 
-    override fun add(player: Player) {
-        player.id = UUID.randomUUID().toString()
-        items.add(player)
+    override fun add(player: Player): Player {
+        val playerWithId = player.copy(id = UUID.randomUUID().toString())
+        items.add(playerWithId)
+        return playerWithId
     }
 
     override fun all(): List<Player> = items
@@ -33,7 +33,8 @@ class MemoryPlayerRepository : PlayerRepository {
 
     override fun getByNickname(nickname: String): Player? = items.find { it.nickname == nickname }
     override fun update(player: Player) {
-        updatedItems.add(player)
+        val index = items.indexOfFirst { it.id == player.id }
+        items[index] = player
     }
 
     override fun getById(id: String): Player? = items.find { it.id == id }

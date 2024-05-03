@@ -96,12 +96,12 @@ class DynamoPlayerRepository : PlayerRepository {
     Update data functions
      */
 
-    override fun add(player: Player) {
+    override fun add(player: Player) : Player{
         val itemValues = mutableMapOf<String, AttributeValue>()
-        player.id = UUID.randomUUID().toString()
-        itemValues["Id"] = AttributeValue.S(player.id)
-        itemValues["Nickname"] = AttributeValue.S(player.nickname)
-        itemValues["Score"] = AttributeValue.N(player.score.toString())
+        val playerWithId = player.copy(id = UUID.randomUUID().toString())
+        itemValues["Id"] = AttributeValue.S(playerWithId.id)
+        itemValues["Nickname"] = AttributeValue.S(playerWithId.nickname)
+        itemValues["Score"] = AttributeValue.N(playerWithId.score.toString())
 
         val request = PutItemRequest {
             tableName = PLAYERS_TABLE_NAME
@@ -109,6 +109,7 @@ class DynamoPlayerRepository : PlayerRepository {
         }
 
         getClient().use { ddb -> runBlocking { ddb.putItem(request) } }
+        return playerWithId
     }
 
     override fun update(player: Player) {
@@ -216,9 +217,6 @@ class DynamoPlayerRepository : PlayerRepository {
         val id = item["Id"]?.asS() ?: ""
         val nickname = item["Nickname"]?.asS() ?: ""
         val score = item["Score"]?.asN()?.toInt() ?: 0
-        val player = Player(nickname)
-        player.score = score
-        player.id = id
-        return player
+        return Player(nickname, id, score)
     }
 }

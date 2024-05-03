@@ -10,8 +10,8 @@ import kotlin.test.assertEquals
 class RankingsRoutesTest : BaseRoutesTest(){
     @Test
     fun `can get player rankings`() = withApp {
-        playerRepository.add(playerWithScore("menfin", 8))
-        playerRepository.add(playerWithScore("Paul", 16))
+        playerRepository.add(Player("menfin", score = 8))
+        playerRepository.add(Player("Paul", score = 16))
         val client = createClient()
 
         val response = client.get("/rankings")
@@ -22,11 +22,4 @@ class RankingsRoutesTest : BaseRoutesTest(){
         assertEquals("Paul", players[0].nickname)
         assertEquals("menfin", players[1].nickname)
     }
-
-    private fun playerWithScore(nickname: String, score: Int): Player {
-        val player = Player(nickname)
-        player.score = score
-        return player
-    }
-
 }

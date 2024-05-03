@@ -91,8 +91,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
 
     @Test
     fun `id and score returned when getting all players`() = withApp {
-        val menfin = Player("menfin")
-        menfin.score = 43
+        val menfin = Player("menfin", score = 43)
         playerRepository.add(menfin)
 
         val response = createClient().get("/players")

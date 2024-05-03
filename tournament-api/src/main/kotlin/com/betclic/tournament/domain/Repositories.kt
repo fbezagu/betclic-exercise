@@ -7,7 +7,7 @@ abstract class Repositories {
 
 interface PlayerRepository {
     val count: Int
-    fun add(player: Player)
+    fun add(player: Player): Player
     fun all(): List<Player>
     fun clear()
     fun getByNickname(nickname: String): Player?

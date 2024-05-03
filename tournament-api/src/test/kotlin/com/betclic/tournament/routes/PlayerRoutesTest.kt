@@ -12,8 +12,7 @@ import kotlin.test.assertNotNull
 class PlayerRoutesTest : BaseRoutesTest() {
     @Test
     fun `can update player score`() = withApp {
-        val pierre = Player("Pierre")
-        playerRepository.add(pierre)
+        val pierre = playerRepository.add(Player("Pierre"))
         val client = createClient()
 
         val response = client.put("/players/${pierre.id}") {
@@ -22,7 +21,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(18, pierre.score)
+        assertEquals(18, playerRepository.getById(pierre.id)?.score)
     }
 
     @Test
@@ -53,8 +52,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
 
     @Test
     fun `can get one player`() = withApp {
-        val pierre = Player("Pierre")
-        playerRepository.add(pierre)
+        val pierre = playerRepository.add(Player("Pierre"))
         val client = createClient()
 
         val response = client.get("/players/${pierre.id}")
@@ -87,11 +85,8 @@ class PlayerRoutesTest : BaseRoutesTest() {
 
     @Test
     fun `can get one player rank`() = withApp {
-        val pierre = Player("Pierre")
-        playerRepository.add(pierre)
-        val michel = Player("Michel")
-        michel.score = 8
-        playerRepository.add(michel)
+        val pierre = playerRepository.add(Player("Pierre"))
+        playerRepository.add(Player("Michel", score = 8))
         val client = createClient()
 
         val response = client.get("/players/${pierre.id}")
