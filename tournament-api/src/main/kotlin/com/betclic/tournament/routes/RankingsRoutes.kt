@@ -1,5 +1,6 @@
 package com.betclic.tournament.routes
 
+import com.betclic.tournament.domain.getRankings.GetRankingsUseCase
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.domain.model.Tournament
 import io.ktor.server.application.*
@@ -12,8 +13,8 @@ fun Route.rankingsRouting() {
 
     route("/rankings") {
         get {
-            val currentTournament = Tournament(repositories)
-            val players = currentTournament.getRankings()
+            val getRankings = GetRankingsUseCase(repositories)
+            val players = getRankings.getRankings()
 
             call.respond(players.map { PlayerView.fromPlayer(it) })
         }
