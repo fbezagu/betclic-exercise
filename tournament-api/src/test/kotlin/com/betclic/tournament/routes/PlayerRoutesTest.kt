@@ -1,5 +1,7 @@
 package com.betclic.tournament.routes
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.betclic.tournament.domain.model.Player
 import com.betclic.tournament.domain.model.Score
 import io.ktor.client.call.*
@@ -21,8 +23,8 @@ class PlayerRoutesTest : BaseRoutesTest() {
             setBody(PlayerView("Pierre", score = 18))
         }
 
-        assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(Score(18), playerRepository.getById(pierre.id)?.score)
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
+        assertThat(playerRepository.getById(pierre.id)?.score).isEqualTo(Score(18))
     }
 
     @Test
@@ -34,8 +36,8 @@ class PlayerRoutesTest : BaseRoutesTest() {
             setBody(PlayerView("Pierre", "", 18))
         }
 
-        assertEquals(HttpStatusCode.BadRequest, response.status)
-        assertEquals("No id provided", response.bodyAsText())
+        assertThat(response.status).isEqualTo(HttpStatusCode.BadRequest)
+        assertThat("No id provided", response.bodyAsText())
     }
 
     @Test
@@ -47,8 +49,8 @@ class PlayerRoutesTest : BaseRoutesTest() {
             setBody(PlayerView("Pierre", "", 18))
         }
 
-        assertEquals(HttpStatusCode.BadRequest, response.status)
-        assertEquals("Player with id <unknown> not found", response.bodyAsText())
+        assertThat(response.status).isEqualTo(HttpStatusCode.BadRequest)
+        assertThat("Player with id <unknown> not found", response.bodyAsText())
     }
 
     @Test
@@ -58,18 +60,18 @@ class PlayerRoutesTest : BaseRoutesTest() {
 
         val response = client.get("/players/${pierre.id}")
 
-        assertEquals(HttpStatusCode.OK, response.status)
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
         val player = response.body<PlayerView>()
         assertNotNull(player)
-        assertEquals("Pierre", player.nickname)
-        assertEquals(1, player.rank)
+        assertThat("Pierre", player.nickname)
+        assertThat(player.rank).isEqualTo(1)
     }
 
     @Test
     fun `can handle player not found`() = withApp {
         val response = client.get("/players/abcd")
 
-        assertEquals(HttpStatusCode.NotFound, response.status)
+        assertThat(response.status).isEqualTo(HttpStatusCode.NotFound)
     }
 
     @Test
@@ -79,9 +81,9 @@ class PlayerRoutesTest : BaseRoutesTest() {
 
         val response = client.get("/players/")
 
-        assertEquals(HttpStatusCode.OK, response.status)
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
         val players = response.body<List<PlayerView>>()
-        assertEquals(1, players.size)
+        assertThat(players.size).isEqualTo(1)
     }
 
     @Test
@@ -92,7 +94,7 @@ class PlayerRoutesTest : BaseRoutesTest() {
 
         val response = client.get("/players/${pierre.id}")
 
-        assertEquals(2, response.body<PlayerView>().rank)
+        assertThat(response.body<PlayerView>().rank).isEqualTo(2)
     }
 }
 

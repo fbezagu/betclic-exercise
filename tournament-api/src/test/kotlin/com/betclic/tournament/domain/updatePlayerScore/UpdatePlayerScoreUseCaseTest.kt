@@ -1,5 +1,7 @@
 package com.betclic.tournament.domain.updatePlayerScore
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.model.Player
 import com.betclic.tournament.domain.model.Score
@@ -16,7 +18,7 @@ class UpdatePlayerScoreUseCaseTest {
 
         useCase.updatePlayerScore(michel, Score(42))
 
-        assertEquals(Score(42), repositories.players().all()[0].score)
+        assertThat(repositories.players().all()[0].score).isEqualTo(Score(42))
     }
 
     @Test
@@ -27,7 +29,7 @@ class UpdatePlayerScoreUseCaseTest {
 
         useCase.updatePlayerScore(paul, Score(8))
 
-        assertEquals(Score(8), repositories.players().all()[1].score)
+        assertThat( repositories.players().all()[1].score).isEqualTo(Score(8))
     }
 
 }

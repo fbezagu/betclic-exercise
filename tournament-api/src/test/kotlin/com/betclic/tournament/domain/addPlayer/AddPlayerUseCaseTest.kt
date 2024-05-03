@@ -1,5 +1,7 @@
 package com.betclic.tournament.domain.addPlayer
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.model.Player
 import com.betclic.tournament.domain.model.PlayerAlreadyExistsException
@@ -16,8 +18,8 @@ class AddPlayerUseCaseTest {
 
         val player = uc.add("Michel")
 
-        assertEquals("Michel", player.nickname)
-        assertEquals(1, repositories.players().count)
+        assertThat(player.nickname).isEqualTo("Michel")
+        assertThat(repositories.players().count).isEqualTo(1)
     }
 
     @Test
@@ -29,6 +31,6 @@ class AddPlayerUseCaseTest {
             uc.add("Paul")
         }
 
-        assertEquals(1, repositories.players().count)
+        assertThat(repositories.players().count).isEqualTo(1)
     }
 }

@@ -1,5 +1,7 @@
 package com.betclic.tournament.domain.getPlayerInfo
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.model.Player
 import com.betclic.tournament.domain.model.Score
@@ -16,7 +18,7 @@ class GetPlayerInfoUseCaseTest {
 
         val rank = uc.playerRank(pierre)
 
-        assertEquals(1, rank)
+        assertThat( rank).isEqualTo(1)
     }
 
     @Test
@@ -28,7 +30,7 @@ class GetPlayerInfoUseCaseTest {
 
         val rank = uc.playerRank(pierre)
 
-        assertEquals(3, rank)
+        assertThat(rank).isEqualTo(3)
     }
 
 }

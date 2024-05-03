@@ -1,5 +1,7 @@
 package com.betclic.tournament.routes
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.betclic.tournament.domain.model.Player
 import com.betclic.tournament.domain.model.Score
 import io.ktor.client.call.*
@@ -8,7 +10,7 @@ import io.ktor.http.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class RankingsRoutesTest : BaseRoutesTest(){
+class RankingsRoutesTest : BaseRoutesTest() {
     @Test
     fun `can get player rankings`() = withApp {
         playerRepository.add(Player("menfin", score = Score(8)))
@@ -17,10 +19,10 @@ class RankingsRoutesTest : BaseRoutesTest(){
 
         val response = client.get("/rankings")
 
-        assertEquals(HttpStatusCode.OK, response.status)
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
         val players = response.body<List<PlayerView>>()
-        assertEquals(2, players.size)
-        assertEquals("Paul", players[0].nickname)
-        assertEquals("menfin", players[1].nickname)
+        assertThat(players.size).isEqualTo(2)
+        assertThat(players[0].nickname).isEqualTo("Paul")
+        assertThat(players[1].nickname).isEqualTo("menfin")
     }
 }

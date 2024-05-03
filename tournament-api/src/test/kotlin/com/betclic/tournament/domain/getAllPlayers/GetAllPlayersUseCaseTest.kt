@@ -1,5 +1,7 @@
 package com.betclic.tournament.domain.getAllPlayers
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.model.Player
 import org.junit.jupiter.api.Test
@@ -18,8 +20,8 @@ class GetAllPlayersUseCaseTest {
 
         val players = useCase.getPlayers()
 
-        assertEquals(2, players.size)
-        assertEquals("Paul", players[0].nickname)
-        assertEquals("Pierre", players[1].nickname)
+        assertThat( players.size).isEqualTo(2)
+        assertThat( players[0].nickname).isEqualTo("Paul")
+        assertThat( players[1].nickname).isEqualTo("Pierre")
     }
 }

@@ -40,6 +40,7 @@ dependencies {
     testImplementation("io.ktor:ktor-client-content-negotiation")
     testImplementation("io.insert-koin:koin-test:$koin_version")
     testImplementation("io.insert-koin:koin-test-junit5:$koin_version")
+    testImplementation("com.willowtreeapps.assertk:assertk:0.28.1")
 }
 
 tasks.test {

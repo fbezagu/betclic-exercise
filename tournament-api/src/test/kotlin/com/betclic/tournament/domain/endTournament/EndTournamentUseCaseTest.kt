@@ -1,5 +1,7 @@
 package com.betclic.tournament.domain.endTournament
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.model.Player
 import org.junit.jupiter.api.Test
@@ -15,7 +17,7 @@ class EndTournamentUseCaseTest {
 
         uc.end()
 
-        assertEquals(0, repositories.players().count)
+        assertThat( repositories.players().count).isEqualTo(0)
     }
 
 }

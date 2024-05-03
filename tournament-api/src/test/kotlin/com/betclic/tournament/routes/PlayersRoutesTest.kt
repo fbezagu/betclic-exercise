@@ -1,5 +1,7 @@
 package com.betclic.tournament.routes
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.betclic.tournament.domain.model.Player
 import com.betclic.tournament.domain.model.Score
 import io.ktor.client.call.*
@@ -15,8 +17,8 @@ class PlayersRoutesTest : BaseRoutesTest() {
     fun `can get players when none`() = withApp {
         val response = client.get("/players")
 
-        assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals("[]", response.bodyAsText())
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
+        assertThat("[]", response.bodyAsText())
     }
 
     @Test
@@ -26,11 +28,11 @@ class PlayersRoutesTest : BaseRoutesTest() {
 
         val response = createClient().get("/players")
 
-        assertEquals(HttpStatusCode.OK, response.status)
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
         val players = response.body<List<PlayerView>>()
-        assertEquals(2, players.size)
-        assertEquals("menfin", players[0].nickname)
-        assertEquals("Paul", players[1].nickname)
+        assertThat(players.size).isEqualTo(2)
+        assertThat(players[0].nickname).isEqualTo("menfin")
+        assertThat(players[1].nickname).isEqualTo("Paul")
     }
 
     @Test
@@ -39,8 +41,8 @@ class PlayersRoutesTest : BaseRoutesTest() {
 
         val response = client.delete("/players")
 
-        assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals(0, playerRepository.count)
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
+        assertThat(playerRepository.count).isEqualTo(0)
     }
 
     @Test
@@ -53,14 +55,14 @@ class PlayersRoutesTest : BaseRoutesTest() {
             setBody(PlayerView("Michel"))
         }
 
-        assertEquals(HttpStatusCode.Created, response.status)
-        assertEquals(1, playerRepository.count)
+        assertThat(response.status).isEqualTo(HttpStatusCode.Created)
+        assertThat(playerRepository.count).isEqualTo(1)
         val playerInRepository = playerRepository.all()[0]
-        assertEquals("Michel", playerInRepository.nickname)
+        assertThat("Michel", playerInRepository.nickname)
         val playerReturned = response.body<PlayerView>()
         assertNotNull(playerReturned)
-        assertEquals(0, playerReturned.score)
-        assertEquals(playerInRepository.id, playerReturned.id)
+        assertThat(playerReturned.score).isEqualTo(0)
+        assertThat(playerInRepository.id, playerReturned.id)
     }
 
     @Test
@@ -73,7 +75,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
             setBody("{\"nickname\":\"michel\"}")
         }
 
-        assertEquals(HttpStatusCode.Created, response.status)
+        assertThat(response.status).isEqualTo(HttpStatusCode.Created)
     }
 
     @Test
@@ -86,8 +88,8 @@ class PlayersRoutesTest : BaseRoutesTest() {
             setBody(PlayerView("Michel"))
         }
 
-        assertEquals(HttpStatusCode.BadRequest, response.status)
-        assertEquals("Duplicate player nickname", response.bodyAsText())
+        assertThat(response.status).isEqualTo(HttpStatusCode.BadRequest)
+        assertThat(response.bodyAsText()).isEqualTo("Duplicate player nickname")
     }
 
     @Test
@@ -98,7 +100,7 @@ class PlayersRoutesTest : BaseRoutesTest() {
         val response = createClient().get("/players")
 
         val players = response.body<List<PlayerView>>()
-        assertEquals(playerRepository.getByNickname("menfin")?.id, players[0].id)
-        assertEquals(43, players[0].score)
+        assertThat(players[0].id).isEqualTo(playerRepository.getByNickname("menfin")?.id)
+        assertThat(players[0].score).isEqualTo(43)
     }
 }
