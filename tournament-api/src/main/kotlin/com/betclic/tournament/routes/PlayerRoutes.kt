@@ -33,10 +33,11 @@ fun Route.playerRouting() {
             val currentTournament = Tournament(repositories)
             val id = call.parameters["id"] ?: return@get call.respond(
                 currentTournament.getPlayers().map { PlayerView(it.nickname) })
+            val getPlayerInfoUseCase = GetPlayerInfoUseCase(repositories)
             val player =
-                GetPlayerInfoUseCase(repositories).getPlayerInfo(id) ?: return@get call.respond(HttpStatusCode.NotFound)
+                getPlayerInfoUseCase.getPlayerInfo(id) ?: return@get call.respond(HttpStatusCode.NotFound)
             val playerView =
-                PlayerView(player.nickname, player.id, player.score.i, currentTournament.playerRank(player))
+                PlayerView(player.nickname, player.id, player.score.i, getPlayerInfoUseCase.playerRank(player))
             call.respond(HttpStatusCode.OK, playerView)
         }
     }
