@@ -2,7 +2,6 @@ package com.betclic.tournament.domain
 
 import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.model.Player
-import com.betclic.tournament.domain.model.PlayerAlreadyExistsException
 import com.betclic.tournament.domain.model.Score
 import com.betclic.tournament.domain.model.Tournament
 import org.junit.jupiter.api.Test
@@ -39,27 +38,6 @@ class TournamentTest {
 
 
     @Test
-    fun `can update player score`() {
-        val tournament = Tournament(repositories)
-        val michel = repositories.players().add(Player("Michel"))
-
-        tournament.updatePlayerScore(michel, Score(42))
-
-        assertEquals(Score(42), repositories.players().all()[0].score)
-    }
-
-    @Test
-    fun `can update player score when not first in repository`() {
-        val tournament = Tournament(repositories)
-        repositories.players().add(Player("Michel"))
-        val paul = repositories.players().add(Player("Paul"))
-
-        tournament.updatePlayerScore(paul, Score(8))
-
-        assertEquals(Score(8), repositories.players().all()[1].score)
-    }
-
-    @Test
     fun `player is ranked first when alone in tournament`() {
         val tournament = Tournament(repositories)
         val pierre = repositories.players().add(Player("Pierre"))
@@ -82,8 +60,7 @@ class TournamentTest {
     }
 
     private fun playerInTournamentWithScore(tournament: Tournament, nick: String, score: Score): Player {
-        val player = repositories.players().add(Player(nick))
-        return tournament.updatePlayerScore(player, score)
+        return repositories.players().add(Player(nick, score = score))
     }
 
 }
