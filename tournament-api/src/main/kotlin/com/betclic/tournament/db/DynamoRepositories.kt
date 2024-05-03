@@ -4,10 +4,10 @@ import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.*
 import aws.sdk.kotlin.services.dynamodb.waiters.waitUntilTableExists
 import aws.smithy.kotlin.runtime.net.url.Url
-import com.betclic.tournament.domain.PlayerRepository
-import com.betclic.tournament.domain.Player
-import com.betclic.tournament.domain.Repositories
-import com.betclic.tournament.domain.Score
+import com.betclic.tournament.domain.model.PlayerRepository
+import com.betclic.tournament.domain.model.Player
+import com.betclic.tournament.domain.model.Repositories
+import com.betclic.tournament.domain.model.Score
 import kotlinx.coroutines.runBlocking
 import java.util.*
 

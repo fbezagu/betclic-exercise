@@ -1,9 +1,9 @@
 package com.betclic.tournament.db
 
-import com.betclic.tournament.domain.PlayerRepository
-import com.betclic.tournament.domain.Player
-import com.betclic.tournament.domain.Repositories
-import com.betclic.tournament.domain.Score
+import com.betclic.tournament.domain.model.PlayerRepository
+import com.betclic.tournament.domain.model.Player
+import com.betclic.tournament.domain.model.Repositories
+import com.betclic.tournament.domain.model.Score
 import java.util.*
 
 class MemoryRepositories : Repositories() {

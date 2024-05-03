@@ -1,7 +1,7 @@
 package com.betclic.tournament
 
 import com.betclic.tournament.db.DynamoRepositories
-import com.betclic.tournament.domain.Repositories
+import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.plugins.configureRouting
 import com.betclic.tournament.plugins.configureSerialization
 import io.ktor.server.application.*

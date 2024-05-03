@@ -1,6 +1,6 @@
 package com.betclic.tournament.routes
 
-import com.betclic.tournament.domain.Player
+import com.betclic.tournament.domain.model.Player
 import kotlinx.serialization.Serializable
 
 @Serializable

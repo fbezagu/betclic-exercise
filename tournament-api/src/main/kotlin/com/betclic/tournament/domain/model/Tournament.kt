@@ -1,4 +1,4 @@
-package com.betclic.tournament.domain
+package com.betclic.tournament.domain.model
 
 
 class Tournament(val repositories: Repositories) {

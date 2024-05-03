@@ -1,7 +1,7 @@
 package com.betclic.tournament.routes
 
-import com.betclic.tournament.domain.Player
-import com.betclic.tournament.domain.Score
+import com.betclic.tournament.domain.model.Player
+import com.betclic.tournament.domain.model.Score
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

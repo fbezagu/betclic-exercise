@@ -1,10 +1,11 @@
 package com.betclic.tournament.domain
 
-import com.betclic.tournament.db.MemoryPlayerRepository
 import com.betclic.tournament.db.MemoryRepositories
-import org.junit.jupiter.api.Assertions
+import com.betclic.tournament.domain.model.Player
+import com.betclic.tournament.domain.model.PlayerAlreadyExistsException
+import com.betclic.tournament.domain.model.Score
+import com.betclic.tournament.domain.model.Tournament
 import org.junit.jupiter.api.Test
-import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class TournamentTest {
@@ -36,27 +37,6 @@ class TournamentTest {
         assertEquals("Pierre", players[1].nickname)
     }
 
-    @Test
-    fun `can add new player`() {
-        val tournament = Tournament(repositories)
-
-        val player = tournament.addPlayer("Michel")
-
-        assertEquals("Michel", player.nickname)
-        assertEquals(1, repositories.players().count)
-    }
-
-    @Test
-    fun `cant add player with same nickname`() {
-        val tournament = Tournament(repositories)
-        repositories.players().add(Player("Paul"))
-
-        Assertions.assertThrows(PlayerAlreadyExistsException::class.java) {
-            tournament.addPlayer("Paul")
-        }
-
-        assertEquals(1, repositories.players().count)
-    }
 
     @Test
     fun `can update player score`() {
@@ -82,7 +62,7 @@ class TournamentTest {
     @Test
     fun `player is ranked first when alone in tournament`() {
         val tournament = Tournament(repositories)
-        val pierre = tournament.addPlayer("Pierre")
+        val pierre = repositories.players().add(Player("Pierre"))
 
         val rank = tournament.playerRank(pierre)
 
@@ -102,7 +82,7 @@ class TournamentTest {
     }
 
     private fun playerInTournamentWithScore(tournament: Tournament, nick: String, score: Score): Player {
-        val player = tournament.addPlayer(nick)
+        val player = repositories.players().add(Player(nick))
         return tournament.updatePlayerScore(player, score)
     }
 

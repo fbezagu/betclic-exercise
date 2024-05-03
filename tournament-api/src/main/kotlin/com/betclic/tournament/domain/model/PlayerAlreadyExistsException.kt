@@ -1,3 +1,3 @@
-package com.betclic.tournament.domain
+package com.betclic.tournament.domain.model
 
 class PlayerAlreadyExistsException : Exception()

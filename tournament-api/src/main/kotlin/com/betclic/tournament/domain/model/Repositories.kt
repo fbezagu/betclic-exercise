@@ -1,4 +1,4 @@
-package com.betclic.tournament.domain
+package com.betclic.tournament.domain.model
 
 abstract class Repositories {
     abstract fun players(): PlayerRepository

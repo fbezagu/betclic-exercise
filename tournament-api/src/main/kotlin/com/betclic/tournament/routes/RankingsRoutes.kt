@@ -1,7 +1,7 @@
 package com.betclic.tournament.routes
 
-import com.betclic.tournament.domain.Repositories
-import com.betclic.tournament.domain.Tournament
+import com.betclic.tournament.domain.model.Repositories
+import com.betclic.tournament.domain.model.Tournament
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

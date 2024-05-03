@@ -1,4 +1,4 @@
-package com.betclic.tournament.domain
+package com.betclic.tournament.domain.model
 
 interface PlayerRepository {
     val count: Int
