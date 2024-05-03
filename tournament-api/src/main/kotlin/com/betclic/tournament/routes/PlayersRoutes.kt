@@ -2,6 +2,7 @@ package com.betclic.tournament.routes
 
 import com.betclic.tournament.domain.addPlayer.AddPlayer
 import com.betclic.tournament.domain.addPlayer.AddPlayerUseCase
+import com.betclic.tournament.domain.endTournament.EndTournamentUseCase
 import com.betclic.tournament.domain.model.PlayerAlreadyExistsException
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.domain.model.Tournament
@@ -24,8 +25,8 @@ fun Route.playersRouting() {
         }
         delete {
             call.respond(HttpStatusCode.OK)
-            val currentTournament = Tournament(repositories)
-            currentTournament.end()
+            val uc = EndTournamentUseCase(repositories)
+            uc.end()
         }
         post {
             val requestPlayer = call.receive<PlayerView>()

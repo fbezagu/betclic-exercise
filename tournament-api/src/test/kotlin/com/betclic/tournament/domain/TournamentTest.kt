@@ -11,15 +11,6 @@ class TournamentTest {
 
     private val repositories = MemoryRepositories()
 
-    @Test
-    fun `can end tournament`() {
-        val tournament = Tournament(repositories)
-        repositories.players().add(Player("Paul"))
-
-        tournament.end()
-
-        assertEquals(0, repositories.players().count)
-    }
 
     @Test
     fun `can get players`() {
