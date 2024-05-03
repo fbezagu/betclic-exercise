@@ -1,5 +1,6 @@
 package com.betclic.tournament.routes
 
+import com.betclic.tournament.domain.getPlayerInfo.GetPlayerInfoUseCase
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.domain.model.Score
 import com.betclic.tournament.domain.model.Tournament
@@ -32,7 +33,8 @@ fun Route.playerRouting() {
             val currentTournament = Tournament(repositories)
             val id = call.parameters["id"] ?: return@get call.respond(
                 currentTournament.getPlayers().map { PlayerView(it.nickname) })
-            val player = repositories.players().getById(id) ?: return@get call.respond(HttpStatusCode.NotFound)
+            val player =
+                GetPlayerInfoUseCase(repositories).getPlayerInfo(id) ?: return@get call.respond(HttpStatusCode.NotFound)
             val playerView =
                 PlayerView(player.nickname, player.id, player.score.i, currentTournament.playerRank(player))
             call.respond(HttpStatusCode.OK, playerView)
