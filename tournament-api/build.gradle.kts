@@ -1,12 +1,7 @@
-val ktor_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
-val koin_version: String by project
-
 plugins {
     kotlin("jvm") version "1.9.23"
-    id("io.ktor.plugin") version "2.3.9"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.23"
+    alias(libs.plugins.ktor.plugin)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "com.betclic"
@@ -24,23 +19,23 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
-    implementation("io.ktor:ktor-server-netty-jvm")
-    implementation("io.ktor:ktor-server-cors")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("aws.sdk.kotlin:dynamodb:1.0.30")
-    implementation("io.insert-koin:koin-core")
-    implementation("io.insert-koin:koin-ktor:$koin_version")
-    implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.contentNegociation)
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.cors)
+    implementation(libs.logback)
+    implementation(libs.dynamodb)
+    implementation(libs.koin.core)
+    implementation(libs.koin.ktor)
+    implementation(libs.koin.slf4j)
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-    testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation("io.ktor:ktor-client-content-negotiation")
-    testImplementation("io.insert-koin:koin-test:$koin_version")
-    testImplementation("io.insert-koin:koin-test-junit5:$koin_version")
-    testImplementation("com.willowtreeapps.assertk:assertk:0.28.1")
+    testImplementation(libs.junit)
+    testImplementation(libs.ktor.server.tests)
+    testImplementation(libs.ktor.client.contentNegociation)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit5)
+    testImplementation(libs.assertk)
 }
 
 tasks.test {
