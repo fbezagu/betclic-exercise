@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeAll
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.module.Module
+import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.get
 
@@ -23,10 +25,7 @@ open class BaseRoutesTest : KoinTest {
         @BeforeAll
         fun `start koin`() {
             startKoin {
-                modules(org.koin.dsl.module {
-                    single<Repositories> { MemoryRepositories() }
-                    single<AddPlayer> { AddPlayerUseCase(get())  }
-                })
+                modules(module(moduleDeclaration = moduleDeclaration()))
             }
         }
 
@@ -35,12 +34,17 @@ open class BaseRoutesTest : KoinTest {
         fun `stop koin`() {
             stopKoin()
         }
+
+        private fun moduleDeclaration(): Module.() -> Unit = {
+            single<Repositories> { MemoryRepositories() }
+            single<AddPlayer> { AddPlayerUseCase(get()) }
+        }
     }
 
     fun <R> withApp(test: suspend ApplicationTestBuilder.() -> R) = testApplication {
         environment { config = MapApplicationConfig() }
         application { module(testing = true) }
-        loadKoinModules(org.koin.dsl.module { single<Repositories> { MemoryRepositories() } })
+        loadKoinModules(module(moduleDeclaration = moduleDeclaration()))
         test()
     }
 

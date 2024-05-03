@@ -1,6 +1,8 @@
 package com.betclic.tournament
 
 import com.betclic.tournament.db.DynamoRepositories
+import com.betclic.tournament.domain.addPlayer.AddPlayer
+import com.betclic.tournament.domain.addPlayer.AddPlayerUseCase
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.plugins.configureRouting
 import com.betclic.tournament.plugins.configureSerialization
@@ -30,4 +32,5 @@ fun Application.module(testing: Boolean = false) {
 
 val appModule = module {
     single<Repositories> { DynamoRepositories() }
+    single<AddPlayer> { AddPlayerUseCase(get()) }
 }
