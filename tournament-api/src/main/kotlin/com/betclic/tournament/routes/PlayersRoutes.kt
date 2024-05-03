@@ -1,11 +1,10 @@
 package com.betclic.tournament.routes
 
-import com.betclic.tournament.domain.addPlayer.AddPlayer
 import com.betclic.tournament.domain.addPlayer.AddPlayerUseCase
 import com.betclic.tournament.domain.endTournament.EndTournamentUseCase
+import com.betclic.tournament.domain.getAllPlayers.GetAllPlayersUseCase
 import com.betclic.tournament.domain.model.PlayerAlreadyExistsException
 import com.betclic.tournament.domain.model.Repositories
-import com.betclic.tournament.domain.model.Tournament
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -18,9 +17,8 @@ fun Route.playersRouting() {
 
     route("/players") {
         get {
-            val currentTournament = Tournament(repositories)
-            val players = currentTournament.getPlayers()
-
+            val useCase = GetAllPlayersUseCase(repositories)
+            val players = useCase.getPlayers()
             call.respond(players.map { PlayerView.fromPlayer(it) })
         }
         delete {

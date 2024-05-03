@@ -1,9 +1,9 @@
 package com.betclic.tournament.routes
 
+import com.betclic.tournament.domain.getAllPlayers.GetAllPlayersUseCase
 import com.betclic.tournament.domain.getPlayerInfo.GetPlayerInfoUseCase
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.domain.model.Score
-import com.betclic.tournament.domain.model.Tournament
 import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScoreUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -30,9 +30,9 @@ fun Route.playerRouting() {
         }
 
         get {
-            val currentTournament = Tournament(repositories)
+            val uc = GetAllPlayersUseCase(repositories)
             val id = call.parameters["id"] ?: return@get call.respond(
-                currentTournament.getPlayers().map { PlayerView(it.nickname) })
+                uc.getPlayers().map { PlayerView(it.nickname) })
             val getPlayerInfoUseCase = GetPlayerInfoUseCase(repositories)
             val player =
                 getPlayerInfoUseCase.getPlayerInfo(id) ?: return@get call.respond(HttpStatusCode.NotFound)
