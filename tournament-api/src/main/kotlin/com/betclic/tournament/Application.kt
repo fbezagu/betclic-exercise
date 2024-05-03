@@ -4,6 +4,8 @@ import com.betclic.tournament.db.DynamoRepositories
 import com.betclic.tournament.domain.addPlayer.AddPlayer
 import com.betclic.tournament.domain.addPlayer.AddPlayerUseCase
 import com.betclic.tournament.domain.model.Repositories
+import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScore
+import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScoreUseCase
 import com.betclic.tournament.plugins.configureRouting
 import com.betclic.tournament.plugins.configureSerialization
 import io.ktor.server.application.*
@@ -33,4 +35,5 @@ fun Application.module(testing: Boolean = false) {
 val appModule = module {
     single<Repositories> { DynamoRepositories() }
     single<AddPlayer> { AddPlayerUseCase(get()) }
+    single<UpdatePlayerScore> { UpdatePlayerScoreUseCase(get()) }
 }

@@ -4,7 +4,7 @@ import com.betclic.tournament.domain.getAllPlayers.GetAllPlayersUseCase
 import com.betclic.tournament.domain.getPlayerInfo.GetPlayerInfoUseCase
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.domain.model.Score
-import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScoreUseCase
+import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScore
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -14,6 +14,7 @@ import org.koin.ktor.ext.inject
 
 fun Route.playerRouting() {
     val repositories by inject<Repositories>()
+    val updatePlayerScore by inject<UpdatePlayerScore>()
 
     route("/players/{id?}") {
         put {
@@ -24,8 +25,7 @@ fun Route.playerRouting() {
                 HttpStatusCode.BadRequest,
                 "Player with id <${id}> not found"
             )
-            val uc = UpdatePlayerScoreUseCase(repositories)
-            uc.updatePlayerScore(player, newScore)
+            updatePlayerScore.updatePlayerScore(player, newScore)
             call.respond(HttpStatusCode.OK)
         }
 

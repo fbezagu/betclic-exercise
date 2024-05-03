@@ -4,6 +4,8 @@ import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.addPlayer.AddPlayer
 import com.betclic.tournament.domain.addPlayer.AddPlayerUseCase
 import com.betclic.tournament.domain.model.Repositories
+import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScore
+import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScoreUseCase
 import com.betclic.tournament.module
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
@@ -38,6 +40,7 @@ open class BaseRoutesTest : KoinTest {
         private fun moduleDeclaration(): Module.() -> Unit = {
             single<Repositories> { MemoryRepositories() }
             single<AddPlayer> { AddPlayerUseCase(get()) }
+            single<UpdatePlayerScore> { UpdatePlayerScoreUseCase(get()) }
         }
     }
 
