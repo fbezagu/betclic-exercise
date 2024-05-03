@@ -1,6 +1,7 @@
 package com.betclic.tournament.routes
 
 import com.betclic.tournament.domain.addPlayer.AddPlayer
+import com.betclic.tournament.domain.endTournament.EndTournament
 import com.betclic.tournament.domain.endTournament.EndTournamentUseCase
 import com.betclic.tournament.domain.getAllPlayers.GetAllPlayersUseCase
 import com.betclic.tournament.domain.model.PlayerAlreadyExistsException
@@ -15,6 +16,7 @@ import org.koin.ktor.ext.inject
 fun Route.playersRouting() {
     val repositories by inject<Repositories>()
     val addPlayer by inject<AddPlayer>()
+    val endTournament by inject<EndTournament>()
 
     route("/players") {
         get {
@@ -24,8 +26,7 @@ fun Route.playersRouting() {
         }
         delete {
             call.respond(HttpStatusCode.OK)
-            val uc = EndTournamentUseCase(repositories)
-            uc.end()
+            endTournament.end()
         }
         post {
             val requestPlayer = call.receive<PlayerView>()

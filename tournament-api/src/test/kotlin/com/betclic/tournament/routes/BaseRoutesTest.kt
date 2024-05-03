@@ -3,6 +3,8 @@ package com.betclic.tournament.routes
 import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.addPlayer.AddPlayer
 import com.betclic.tournament.domain.addPlayer.AddPlayerUseCase
+import com.betclic.tournament.domain.endTournament.EndTournament
+import com.betclic.tournament.domain.endTournament.EndTournamentUseCase
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScore
 import com.betclic.tournament.domain.updatePlayerScore.UpdatePlayerScoreUseCase
@@ -41,6 +43,7 @@ open class BaseRoutesTest : KoinTest {
             single<Repositories> { MemoryRepositories() }
             single<AddPlayer> { AddPlayerUseCase(get()) }
             single<UpdatePlayerScore> { UpdatePlayerScoreUseCase(get()) }
+            single<EndTournament> { EndTournamentUseCase(get()) }
         }
     }
 
