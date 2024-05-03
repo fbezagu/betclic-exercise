@@ -3,7 +3,6 @@ package com.betclic.tournament.routes
 import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.addPlayer.AddPlayer
 import com.betclic.tournament.domain.addPlayer.AddPlayerUseCase
-import com.betclic.tournament.domain.model.PlayerRepository
 import com.betclic.tournament.domain.model.Repositories
 import com.betclic.tournament.module
 import io.ktor.client.plugins.contentnegotiation.*

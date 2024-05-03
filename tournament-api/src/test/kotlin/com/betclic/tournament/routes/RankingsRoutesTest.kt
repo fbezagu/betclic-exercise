@@ -8,7 +8,6 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 class RankingsRoutesTest : BaseRoutesTest() {
     @Test

@@ -6,7 +6,6 @@ import com.betclic.tournament.db.MemoryRepositories
 import com.betclic.tournament.domain.model.Player
 import com.betclic.tournament.domain.model.Score
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 class GetPlayerInfoUseCaseTest {
     private val repositories = MemoryRepositories()

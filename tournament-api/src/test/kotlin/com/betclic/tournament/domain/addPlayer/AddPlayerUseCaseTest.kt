@@ -7,7 +7,6 @@ import com.betclic.tournament.domain.model.Player
 import com.betclic.tournament.domain.model.PlayerAlreadyExistsException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 class AddPlayerUseCaseTest {
     private val repositories = MemoryRepositories()
